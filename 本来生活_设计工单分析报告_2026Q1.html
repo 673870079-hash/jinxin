@@ -1,0 +1,1481 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>本来生活设计工单分析报告（2026 Q1）</title>
+  <style>
+    :root {
+      --ink: #10253f;
+      --ink-soft: #3b536f;
+      --brand: #0f4c81;
+      --brand-2: #1a6a8c;
+      --accent: #bf6d2b;
+      --bg: #edf2f7;
+      --card: #ffffff;
+      --line: #d3dee9;
+      --good: #1f7a6b;
+      --muted: #647a93;
+      --shadow: 0 10px 30px rgba(10, 30, 55, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% -12%, #dbe8f4 0, rgba(219, 232, 244, 0) 45%),
+        radial-gradient(circle at 95% 18%, #d2e4ef 0, rgba(210, 228, 239, 0) 40%),
+        var(--bg);
+      line-height: 1.55;
+    }
+
+    .page {
+      width: min(1400px, 96vw);
+      margin: 24px auto 40px;
+      padding: 0 10px 30px;
+    }
+
+    .hero {
+      position: relative;
+      background: linear-gradient(122deg, #0f2945 0%, #123f67 62%, #0f4c81 100%);
+      color: #fff;
+      border-radius: 18px;
+      padding: 28px 28px 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -55px;
+      top: -55px;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .hero .eyebrow {
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      opacity: 0.82;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(24px, 3.2vw, 38px);
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .hero .sub {
+      margin-top: 10px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .chip-group {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .filter-wrap {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .filter-item label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .filter-item select {
+      width: 100%;
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    .filter-actions {
+      display: flex;
+      align-items: end;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .btn-reset {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .filter-summary {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .section {
+      margin-top: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 18px 18px 14px;
+    }
+
+    .section h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: var(--ink);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .section p.meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .kpi-grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .kpi-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: linear-gradient(180deg, #fff 0%, #f9fbfd 100%);
+      min-height: 132px;
+    }
+
+    .kpi-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      background: #eff5fb;
+      display: grid;
+      place-items: center;
+      margin-bottom: 8px;
+    }
+
+    .kpi-icon svg {
+      width: 17px;
+      height: 17px;
+      stroke: var(--brand);
+      fill: none;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .kpi-title {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .kpi-value {
+      font-size: 26px;
+      line-height: 1.15;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 5px;
+      word-break: break-word;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 14px;
+    }
+
+    .chart-panel {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 12px 8px;
+      background: #fff;
+    }
+
+    .chart-title {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .chart-sub {
+      margin: -4px 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .chart-box {
+      width: 100%;
+      min-height: 260px;
+    }
+
+    .chart-box svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .no-data {
+      min-height: 200px;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-size: 13px;
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      background: #fbfdff;
+    }
+
+    .insight-list,
+    .recommend-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--ink-soft);
+      font-size: 14px;
+    }
+
+    .insight-list li,
+    .recommend-list li {
+      margin: 7px 0;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    thead {
+      background: #f1f6fb;
+    }
+
+    th, td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .mono {
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum";
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .donut-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .donut {
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      position: relative;
+      margin: 8px auto;
+    }
+
+    .donut::after {
+      content: "";
+      position: absolute;
+      inset: 42px;
+      background: #fff;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      box-shadow: inset 0 0 0 1px #eef4fa;
+    }
+
+    .donut-legend {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 12px;
+    }
+
+    .donut-legend li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 7px 0;
+      color: var(--ink-soft);
+    }
+
+    .swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex: 0 0 auto;
+    }
+
+    .footer {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
+    }
+
+    @media (max-width: 1180px) {
+      .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .two-col { grid-template-columns: 1fr; }
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+      .filter-wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 760px) {
+      .page { width: min(98vw, 1100px); margin-top: 10px; }
+      .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .donut-layout { grid-template-columns: 1fr; }
+      .filter-wrap { grid-template-columns: 1fr; }
+      .filter-actions { justify-content: flex-start; }
+      .hero { padding: 20px 16px; border-radius: 14px; }
+      .section { padding: 14px 12px 12px; }
+      th, td { padding: 8px 7px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="eyebrow">Benlai Design PMO Report</div>
+      <h1>本来生活设计工单分析报告<br/>2026年1-3月（麦肯锡风格）</h1>
+      <div class="sub">数据周期：2026.01 / 2026.02 / 2026.03 ｜ 数据口径：月维度到销售需求方 ｜ 汇总行已剔除</div>
+      <div class="chip-group">
+        <span class="chip">分析模型：规模 × 结构 × 集中度 × 金额段</span>
+        <span class="chip">输出类型：管理层经营分析</span>
+        <span class="chip">来源文件：2026.01 / 2026.02 / 2026.03</span>
+      </div>
+    </header>
+
+    <section class="section">
+      <h2>筛选器</h2>
+      <p class="meta">支持按月份、大区（一级部门）、部门（二级部门）进行联动筛选</p>
+      <div class="filter-wrap">
+        <div class="filter-item">
+          <label for="filter-month">月份</label>
+          <select id="filter-month"></select>
+        </div>
+        <div class="filter-item">
+          <label for="filter-dept1">大区（一级部门）</label>
+          <select id="filter-dept1"></select>
+        </div>
+        <div class="filter-item">
+          <label for="filter-dept2">部门（二级部门）</label>
+          <select id="filter-dept2"></select>
+        </div>
+        <div class="filter-actions">
+          <button id="btn-reset-filters" class="btn-reset" type="button">重置筛选</button>
+        </div>
+      </div>
+      <div id="filter-summary" class="filter-summary">当前筛选：全量数据</div>
+    </section>
+
+    <section class="section">
+      <h2>核心KPI总览</h2>
+      <p class="meta">Q1 设计需求业务规模与组织覆盖情况</p>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+          <div class="kpi-title">累计项目数</div>
+          <div class="kpi-value" id="kpi-projects">1,673</div>
+          <div class="kpi-sub">已剔除各月汇总行</div>
+        </div>
+        
+
+        <div class="kpi-card">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v8c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 10c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div>
+          <div class="kpi-title">累计实际总价</div>
+          <div class="kpi-value" id="kpi-amount">¥538,725</div>
+          <div class="kpi-sub">2026年1-3月</div>
+        </div>
+        
+
+        <div class="kpi-card">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M3 18h18"/><path d="M5 15l4-4 3 3 7-7"/><path d="M15 7h4v4"/></svg></div>
+          <div class="kpi-title">单项目均值</div>
+          <div class="kpi-value" id="kpi-unit">¥322</div>
+          <div class="kpi-sub">总价 / 项目数</div>
+        </div>
+        
+
+        <div class="kpi-card">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M3.5 18c0-2.5 2.2-4.5 4.5-4.5S12.5 15.5 12.5 18"/><path d="M13 18c.2-1.9 1.9-3.3 3.8-3.3 2 0 3.7 1.4 3.9 3.3"/></svg></div>
+          <div class="kpi-title">需求方覆盖</div>
+          <div class="kpi-value" id="kpi-requester-count">489</div>
+          <div class="kpi-sub">去重需求方人数</div>
+        </div>
+        
+
+        <div class="kpi-card">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="4"/><rect x="3" y="15" width="6" height="4"/><rect x="15" y="15" width="6" height="4"/><path d="M12 7v4M6 11h12M6 11v4M18 11v4"/></svg></div>
+          <div class="kpi-title">组织覆盖</div>
+          <div class="kpi-value" id="kpi-org">14/38/97</div>
+          <div class="kpi-sub">一级/二级/三级部门</div>
+        </div>
+        
+
+        <div class="kpi-card">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 10h18M8 5v14M16 5v14"/></svg></div>
+          <div class="kpi-title">分析明细条数</div>
+          <div class="kpi-value" id="kpi-rows">766</div>
+          <div class="kpi-sub">源数据行（有效）</div>
+        </div>
+        </div>
+    </section>
+
+    <section class="section">
+      <h2>管理层关键结论</h2>
+      <ul class="insight-list"><li>2026年Q1共完成 1,673 个设计项目，累计金额 ¥538,725，单项目均值 ¥322。</li>
+<li>月度规模呈“先降后稳”：2月项目数环比 -69.9%、金额环比 -70.3%；3月项目数环比 -23.7%，但金额环比 +31.6%。</li>
+<li>3月单项目金额 ¥497，较2月提升 72.5%，显示需求结构向高价值任务集中。</li>
+<li>一级部门中，销售中台贡献金额 ¥153,319，占比 28.5%，其单项目金额为 ¥989。</li>
+<li>需求方结构较分散：共 489 位需求方，CR10 为 27.0%，HHI 为 109。</li>
+<li>金额段结构显示明显“头重”：1000元及以上记录仅占明细 18.1%，却贡献总金额 62.5%。</li></ul>
+    </section>
+
+    <section class="section">
+      <h2>规模与效率走势</h2>
+      <div class="two-col">
+        <div class="chart-panel">
+          <p class="chart-title">月度项目数与实际总价趋势（双轴）</p>
+          <p class="chart-sub">柱形：金额；折线：项目数；标签：单项目金额</p>
+          <div id="chart-monthly" class="chart-box"></div>
+        </div>
+        <div class="chart-panel">
+          <p class="chart-title">一级部门金额贡献 Top 10</p>
+          <p class="chart-sub">横向对比主要业务单元金额规模</p>
+          <div id="chart-dept1-amt" class="chart-box"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>结构分析</h2>
+      <div class="grid-2">
+        <div class="chart-panel">
+          <p class="chart-title">一级部门单项目金额（样本量≥30）</p>
+          <p class="chart-sub">用于识别高价值需求来源部门</p>
+          <div id="chart-dept1-unit" class="chart-box"></div>
+        </div>
+        <div class="chart-panel">
+          <p class="chart-title">金额段分布（按总金额）</p>
+          <p class="chart-sub">观察结构是否集中于高金额任务</p>
+          <div class="donut-layout">
+            <div id="chart-donut" class="donut"></div>
+            <ul id="chart-donut-legend" class="donut-legend"></ul>
+          </div>
+        </div>
+      </div>
+      <div class="grid-2" style="margin-top: 14px;">
+        <div class="chart-panel">
+          <p class="chart-title">需求方金额 Top 12</p>
+          <p class="chart-sub">识别高价值需求方与投入重点</p>
+          <div id="chart-requester" class="chart-box"></div>
+        </div>
+        <div class="chart-panel">
+          <p class="chart-title">需求方项目量-单价散点（金额Top 30）</p>
+          <p class="chart-sub">X轴：项目量，Y轴：单项目金额，圆点大小：总金额</p>
+          <div id="chart-scatter" class="chart-box"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>月度 × 一级部门金额热力图</h2>
+      <p class="meta">展示各月主要业务单元贡献变化，辅助识别结构性波动</p>
+      <div id="chart-heatmap" class="chart-box" style="min-height: 210px;"></div>
+    </section>
+
+    <section class="section">
+      <h2>集中度与组织分层明细</h2>
+      <div class="grid-3">
+        <div class="chart-panel">
+          <p class="chart-title">需求方集中度指标</p>
+          <table>
+            <tbody>
+              <tr><td>CR1</td><td id="metric-cr1" class="mono">4.7%</td></tr>
+              <tr><td>CR5</td><td id="metric-cr5" class="mono">18.1%</td></tr>
+              <tr><td>CR10</td><td id="metric-cr10" class="mono">27.0%</td></tr>
+              <tr><td>CR20</td><td id="metric-cr20" class="mono">35.4%</td></tr>
+              <tr><td>长尾占比（非Top20）</td><td id="metric-tail" class="mono">64.6%</td></tr>
+              <tr><td>HHI</td><td id="metric-hhi" class="mono">109</td></tr>
+            </tbody>
+          </table>
+          <p class="note">HHI远低于1500，需求方结构分散，头部垄断风险低。</p>
+        </div>
+        <div class="chart-panel" style="grid-column: span 2;">
+          <p class="chart-title">二级部门金额 Top 10</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>二级部门</th>
+                  <th>项目数</th>
+                  <th>金额</th>
+                  <th>单项目金额</th>
+                  <th>金额占比</th>
+                </tr>
+              </thead>
+              <tbody id="dept2-table-body">
+        <tr>
+          <td>1</td>
+          <td>销售中台 / 商城运营部</td>
+          <td>143</td>
+          <td>¥133,821</td>
+          <td>¥936</td>
+          <td>24.8%</td>
+        </tr>
+        
+
+        <tr>
+          <td>2</td>
+          <td>华北大区 / 华北综合办公室</td>
+          <td>278</td>
+          <td>¥69,085</td>
+          <td>¥249</td>
+          <td>12.8%</td>
+        </tr>
+        
+
+        <tr>
+          <td>3</td>
+          <td>深桂大区 / 深圳综合管理办公室</td>
+          <td>208</td>
+          <td>¥64,963</td>
+          <td>¥312</td>
+          <td>12.1%</td>
+        </tr>
+        
+
+        <tr>
+          <td>4</td>
+          <td>苏皖大区 / 苏皖综合管理办公室</td>
+          <td>179</td>
+          <td>¥49,190</td>
+          <td>¥275</td>
+          <td>9.1%</td>
+        </tr>
+        
+
+        <tr>
+          <td>5</td>
+          <td>广东大区 / 广东综合管理办公室</td>
+          <td>179</td>
+          <td>¥48,785</td>
+          <td>¥273</td>
+          <td>9.1%</td>
+        </tr>
+        
+
+        <tr>
+          <td>6</td>
+          <td>上海大区 / 上海综合管理办公室</td>
+          <td>232</td>
+          <td>¥44,398</td>
+          <td>¥191</td>
+          <td>8.2%</td>
+        </tr>
+        
+
+        <tr>
+          <td>7</td>
+          <td>浙闽大区 / 浙一营销区</td>
+          <td>87</td>
+          <td>¥17,314</td>
+          <td>¥199</td>
+          <td>3.2%</td>
+        </tr>
+        
+
+        <tr>
+          <td>8</td>
+          <td>浙闽大区 / 浙二营销区</td>
+          <td>75</td>
+          <td>¥16,649</td>
+          <td>¥222</td>
+          <td>3.1%</td>
+        </tr>
+        
+
+        <tr>
+          <td>9</td>
+          <td>销售中台 / 用户体验设计部</td>
+          <td>9</td>
+          <td>¥16,300</td>
+          <td>¥1,811</td>
+          <td>3.0%</td>
+        </tr>
+        
+
+        <tr>
+          <td>10</td>
+          <td>中西大区 / 湖北营销区</td>
+          <td>84</td>
+          <td>¥15,372</td>
+          <td>¥183</td>
+          <td>2.9%</td>
+        </tr>
+        </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-panel" style="margin-top: 14px;">
+        <p class="chart-title">需求方金额 Top 12（明细）</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>需求方</th>
+                <th>项目数</th>
+                <th>金额</th>
+                <th>单项目金额</th>
+              </tr>
+            </thead>
+            <tbody id="requester-table-body">
+        <tr>
+          <td>1</td>
+          <td>包彤</td>
+          <td>14</td>
+          <td>¥25,205</td>
+          <td>¥1,800</td>
+        </tr>
+        
+
+        <tr>
+          <td>2</td>
+          <td>王平</td>
+          <td>21</td>
+          <td>¥23,481</td>
+          <td>¥1,118</td>
+        </tr>
+        
+
+        <tr>
+          <td>3</td>
+          <td>叶瑞铨</td>
+          <td>17</td>
+          <td>¥16,696</td>
+          <td>¥982</td>
+        </tr>
+        
+
+        <tr>
+          <td>4</td>
+          <td>金鑫</td>
+          <td>9</td>
+          <td>¥16,300</td>
+          <td>¥1,811</td>
+        </tr>
+        
+
+        <tr>
+          <td>5</td>
+          <td>李一菲</td>
+          <td>18</td>
+          <td>¥15,595</td>
+          <td>¥866</td>
+        </tr>
+        
+
+        <tr>
+          <td>6</td>
+          <td>陈宇佳</td>
+          <td>12</td>
+          <td>¥12,675</td>
+          <td>¥1,056</td>
+        </tr>
+        
+
+        <tr>
+          <td>7</td>
+          <td>李博妍</td>
+          <td>9</td>
+          <td>¥11,787</td>
+          <td>¥1,310</td>
+        </tr>
+        
+
+        <tr>
+          <td>8</td>
+          <td>许中婷</td>
+          <td>6</td>
+          <td>¥8,817</td>
+          <td>¥1,470</td>
+        </tr>
+        
+
+        <tr>
+          <td>9</td>
+          <td>李璐</td>
+          <td>14</td>
+          <td>¥8,454</td>
+          <td>¥604</td>
+        </tr>
+        
+
+        <tr>
+          <td>10</td>
+          <td>吴颖杰</td>
+          <td>12</td>
+          <td>¥6,643</td>
+          <td>¥554</td>
+        </tr>
+        
+
+        <tr>
+          <td>11</td>
+          <td>颜敬松</td>
+          <td>25</td>
+          <td>¥6,178</td>
+          <td>¥247</td>
+        </tr>
+        
+
+        <tr>
+          <td>12</td>
+          <td>龙礼林</td>
+          <td>7</td>
+          <td>¥5,584</td>
+          <td>¥798</td>
+        </tr>
+        </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>数据质量与口径说明</h2>
+      <div class="grid-2">
+        <div class="chart-panel">
+          <p class="chart-title">原始导出空值率（受合并单元格影响）</p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>月份</th>
+                  <th>一级部门空值率</th>
+                  <th>二级部门空值率</th>
+                  <th>三级部门空值率</th>
+                  <th>需求方空值率</th>
+                </tr>
+              </thead>
+              <tbody>
+        <tr>
+          <td>2026.01</td>
+          <td>96.4%</td>
+          <td>92.8%</td>
+          <td>83.5%</td>
+          <td>0.2%</td>
+        </tr>
+        
+
+        <tr>
+          <td>2026.02</td>
+          <td>94.0%</td>
+          <td>90.0%</td>
+          <td>68.0%</td>
+          <td>0.5%</td>
+        </tr>
+        
+
+        <tr>
+          <td>2026.03</td>
+          <td>91.4%</td>
+          <td>82.9%</td>
+          <td>64.5%</td>
+          <td>0.7%</td>
+        </tr>
+        </tbody>
+            </table>
+          </div>
+          <p class="note">说明：部门字段通过“向下填充”复原层级，需求方仅剔除每月最后一行汇总数据。</p>
+        </div>
+        <div class="chart-panel">
+          <p class="chart-title">分析口径边界</p>
+          <ul class="insight-list">
+            <li>当前数据是“月维度到销售需求方”汇总明细，并非逐工单原子级数据。</li>
+            <li>可稳定分析维度：规模、组织结构、需求方集中度、金额段结构、单价变化。</li>
+            <li>暂不可分析维度：工单周期、返工率、准时率、设计类型效率（需补充工单ID与状态时间戳）。</li>
+            <li>报告中所有金额相关指标均以“已完成实际总价”为准。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>管理建议（90天）</h2>
+      <ol class="recommend-list"><li>建立双层服务目录：将“标准化高频需求”与“高价值专项需求”拆分管理，分别配置SLA和报价规则。</li>
+<li>围绕高贡献部门（如销售中台）设置专属设计产能池，按月滚动预测需求峰值并预留弹性资源。</li>
+<li>对1000元以上需求建立立项前置评估（商业价值、复用价值、跨部门影响）和复盘机制。</li>
+<li>对需求方实行分层运营：头部需求方设联合计划会，中长尾需求方推广模板化组件与自助素材。</li>
+<li>优化数据采集口径：导出层面建议取消合并单元格、增加工单ID和任务类型字段，便于后续做效率与质量分析。</li></ol>
+    </section>
+
+    <div class="footer">Generated at local workspace ｜ 本来生活设计工单经营分析</div>
+  </div>
+
+  <script>
+    const DATA = {"total": {"projects": 1673.0, "amount": 538725.0, "unit": 322.0113568439928, "rows": 766, "months": 3, "dept1_count": 14, "dept2_count": 38, "dept3_count": 97, "requester_count": 489}, "months": [{"month": "2026.01", "cnt": 1093.0, "amt": 319018.0, "unit": 291.8737419945105}, {"month": "2026.02", "cnt": 329.0, "amt": 94869.0, "unit": 288.35562310030394}, {"month": "2026.03", "cnt": 251.0, "amt": 124838.0, "unit": 497.3625498007968}], "dept1_top_amt": [{"name": "销售中台", "cnt": 155.0, "amt": 153319.0, "unit": 989.1548387096774, "share": 0.2845960369390691}, {"name": "华北大区", "cnt": 279.0, "amt": 69198.0, "unit": 248.0215053763441, "share": 0.12844772379228733}, {"name": "深桂大区", "cnt": 213.0, "amt": 67017.0, "unit": 314.63380281690144, "share": 0.12439927606849506}, {"name": "广东大区", "cnt": 219.0, "amt": 57386.0, "unit": 262.0365296803653, "share": 0.10652188036567822}, {"name": "苏皖大区", "cnt": 183.0, "amt": 50457.0, "unit": 275.72131147540983, "share": 0.09366003062787136}, {"name": "上海大区", "cnt": 239.0, "amt": 48285.0, "unit": 202.02928870292888, "share": 0.08962828901573158}, {"name": "浙闽大区", "cnt": 165.0, "amt": 35699.0, "unit": 216.35757575757575, "share": 0.06626571998700635}, {"name": "中西大区", "cnt": 140.0, "amt": 29762.0, "unit": 212.5857142857143, "share": 0.05524525500023203}, {"name": "战略合作中心", "cnt": 57.0, "amt": 18524.0, "unit": 324.9824561403509, "share": 0.034384890250127614}, {"name": "商品定制中心", "cnt": 10.0, "amt": 4666.0, "unit": 466.6, "share": 0.008661190774513898}, {"name": "市场营销中心", "cnt": 8.0, "amt": 2323.0, "unit": 290.375, "share": 0.004312033040976379}, {"name": "人力行政中心", "cnt": 2.0, "amt": 1706.0, "unit": 853.0, "share": 0.0031667362754652186}, {"name": "食品采购中心", "cnt": 1.0, "amt": 288.0, "unit": 288.0, "share": 0.0005345955728804121}, {"name": "电商运营中心", "cnt": 2.0, "amt": 95.0, "unit": 47.5, "share": 0.0001763422896654137}], "dept1_top_unit": [{"name": "销售中台", "cnt": 155.0, "amt": 153319.0, "unit": 989.1548387096774, "share": 0.2845960369390691}, {"name": "战略合作中心", "cnt": 57.0, "amt": 18524.0, "unit": 324.9824561403509, "share": 0.034384890250127614}, {"name": "深桂大区", "cnt": 213.0, "amt": 67017.0, "unit": 314.63380281690144, "share": 0.12439927606849506}, {"name": "苏皖大区", "cnt": 183.0, "amt": 50457.0, "unit": 275.72131147540983, "share": 0.09366003062787136}, {"name": "广东大区", "cnt": 219.0, "amt": 57386.0, "unit": 262.0365296803653, "share": 0.10652188036567822}, {"name": "华北大区", "cnt": 279.0, "amt": 69198.0, "unit": 248.0215053763441, "share": 0.12844772379228733}, {"name": "浙闽大区", "cnt": 165.0, "amt": 35699.0, "unit": 216.35757575757575, "share": 0.06626571998700635}, {"name": "中西大区", "cnt": 140.0, "amt": 29762.0, "unit": 212.5857142857143, "share": 0.05524525500023203}, {"name": "上海大区", "cnt": 239.0, "amt": 48285.0, "unit": 202.02928870292888, "share": 0.08962828901573158}], "dept2_top_amt": [{"name": "销售中台 / 商城运营部", "cnt": 143.0, "amt": 133821.0, "unit": 935.8111888111888, "share": 0.248403174161214}, {"name": "华北大区 / 华北综合办公室", "cnt": 278.0, "amt": 69085.0, "unit": 248.5071942446043, "share": 0.1282379692793169}, {"name": "深桂大区 / 深圳综合管理办公室", "cnt": 208.0, "amt": 64963.0, "unit": 312.32211538461536, "share": 0.120586570142466}, {"name": "苏皖大区 / 苏皖综合管理办公室", "cnt": 179.0, "amt": 49190.0, "unit": 274.804469273743, "share": 0.09130818135412316}, {"name": "广东大区 / 广东综合管理办公室", "cnt": 179.0, "amt": 48785.0, "unit": 272.5418994413408, "share": 0.09055640632976009}, {"name": "上海大区 / 上海综合管理办公室", "cnt": 232.0, "amt": 44398.0, "unit": 191.3706896551724, "share": 0.08241310501647409}, {"name": "浙闽大区 / 浙一营销区", "cnt": 87.0, "amt": 17314.0, "unit": 199.01149425287358, "share": 0.03213884635017866}, {"name": "浙闽大区 / 浙二营销区", "cnt": 75.0, "amt": 16649.0, "unit": 221.98666666666668, "share": 0.030904450322520767}, {"name": "销售中台 / 用户体验设计部", "cnt": 9.0, "amt": 16300.0, "unit": 1811.111111111111, "share": 0.030256624437328877}, {"name": "中西大区 / 湖北营销区", "cnt": 84.0, "amt": 15372.0, "unit": 183.0, "share": 0.028534038702491996}, {"name": "中西大区 / 中西综合管理办公室", "cnt": 54.0, "amt": 13446.0, "unit": 249.0, "share": 0.024958930808854238}, {"name": "广东大区 / 珠三角营销区", "cnt": 31.0, "amt": 7106.0, "unit": 229.2258064516129, "share": 0.013190403266972945}, {"name": "商品定制中心 / 综合办", "cnt": 10.0, "amt": 4666.0, "unit": 466.6, "share": 0.008661190774513898}, {"name": "战略合作中心 / 公共事务部", "cnt": 2.0, "amt": 4152.0, "unit": 2076.0, "share": 0.007707086175692607}, {"name": "上海大区 / 上海销售助理部", "cnt": 6.0, "amt": 3609.0, "unit": 601.5, "share": 0.006699150772657664}], "dept3_top_amt": [{"name": "销售中台 / 商城运营部 / 商城运营一组", "cnt": 81.0, "amt": 87532.0, "unit": 1080.641975308642, "share": 0.16247992946308412}, {"name": "销售中台 / 商城运营部 / 商城运营二组", "cnt": 38.0, "amt": 31290.0, "unit": 823.421052631579, "share": 0.0580815815119031}, {"name": "深桂大区 / 深圳综合管理办公室 / 深圳平台运营组", "cnt": 58.0, "amt": 23331.0, "unit": 402.2586206896552, "share": 0.04330781010719755}, {"name": "华北大区 / 华北综合办公室 / 北京项目组", "cnt": 67.0, "amt": 19283.0, "unit": 287.8059701492537, "share": 0.03579377233282287}, {"name": "销售中台 / 用户体验设计部 / 未细分", "cnt": 9.0, "amt": 16300.0, "unit": 1811.111111111111, "share": 0.030256624437328877}, {"name": "华北大区 / 华北综合办公室 / 北京政企组", "cnt": 62.0, "amt": 15474.0, "unit": 249.58064516129033, "share": 0.028723374634553808}, {"name": "销售中台 / 商城运营部 / 商城运营三组", "cnt": 24.0, "amt": 14999.0, "unit": 624.9583333333334, "share": 0.027841663186226738}, {"name": "苏皖大区 / 苏皖综合管理办公室 / 苏州二组", "cnt": 43.0, "amt": 12396.0, "unit": 288.27906976744185, "share": 0.023009884449394405}, {"name": "上海大区 / 上海综合管理办公室 / 上海银行金融行业组", "cnt": 39.0, "amt": 11827.0, "unit": 303.2564102564103, "share": 0.021953686946029977}, {"name": "广东大区 / 广东综合管理办公室 / 广州政企事业组", "cnt": 36.0, "amt": 10657.0, "unit": 296.02777777777777, "share": 0.019781892431203305}, {"name": "苏皖大区 / 苏皖综合管理办公室 / 苏州一组", "cnt": 37.0, "amt": 10207.0, "unit": 275.86486486486484, "share": 0.01894658684857766}, {"name": "广东大区 / 广东综合管理办公室 / 广州文教卫组", "cnt": 38.0, "amt": 10138.0, "unit": 266.7894736842105, "share": 0.01881850665924173}, {"name": "上海大区 / 上海综合管理办公室 / 上海制造行业组", "cnt": 43.0, "amt": 9198.0, "unit": 213.90697674418604, "share": 0.017073646108868162}, {"name": "苏皖大区 / 苏皖综合管理办公室 / 南京二组", "cnt": 28.0, "amt": 9079.0, "unit": 324.25, "share": 0.01685275418812938}, {"name": "广东大区 / 广东综合管理办公室 / 广州银行金融组", "cnt": 39.0, "amt": 8959.0, "unit": 229.71794871794873, "share": 0.016630006032762542}, {"name": "华北大区 / 华北综合办公室 / 北京文教组", "cnt": 28.0, "amt": 8274.0, "unit": 295.5, "share": 0.015358485312543505}, {"name": "深桂大区 / 深圳综合管理办公室 / 深圳文教卫行业组", "cnt": 22.0, "amt": 8204.0, "unit": 372.90909090909093, "share": 0.015228548888579517}, {"name": "华北大区 / 华北综合办公室 / 北京基建组", "cnt": 35.0, "amt": 8029.0, "unit": 229.4, "share": 0.014903707828669543}, {"name": "广东大区 / 广东综合管理办公室 / 广州政府交通组", "cnt": 26.0, "amt": 7791.0, "unit": 299.65384615384613, "share": 0.01446192398719198}, {"name": "华北大区 / 华北综合办公室 / 天津站", "cnt": 41.0, "amt": 7763.0, "unit": 189.34146341463415, "share": 0.014409949417606385}], "requester_top_amt": [{"name": "包彤", "cnt": 14.0, "amt": 25205.0, "unit": 1800.357142857143, "share": 0.046786393800176344}, {"name": "王平", "cnt": 21.0, "amt": 23481.0, "unit": 1118.142857142857, "share": 0.0435862453014061}, {"name": "叶瑞铨", "cnt": 17.0, "amt": 16696.0, "unit": 982.1176470588235, "share": 0.030991693350039446}, {"name": "金鑫", "cnt": 9.0, "amt": 16300.0, "unit": 1811.111111111111, "share": 0.030256624437328877}, {"name": "李一菲", "cnt": 18.0, "amt": 15595.0, "unit": 866.3888888888889, "share": 0.028947979024548702}, {"name": "陈宇佳", "cnt": 12.0, "amt": 12675.0, "unit": 1056.25, "share": 0.0235277739106223}, {"name": "李博妍", "cnt": 9.0, "amt": 11787.0, "unit": 1309.6666666666667, "share": 0.0218794375609077}, {"name": "许中婷", "cnt": 6.0, "amt": 8817.0, "unit": 1469.5, "share": 0.01636642071557845}, {"name": "李璐", "cnt": 14.0, "amt": 8454.0, "unit": 603.8571428571429, "share": 0.015692607545593762}, {"name": "吴颖杰", "cnt": 12.0, "amt": 6643.0, "unit": 553.5833333333334, "share": 0.012330966634182561}, {"name": "颜敬松", "cnt": 25.0, "amt": 6178.0, "unit": 247.12, "share": 0.011467817532136063}, {"name": "龙礼林", "cnt": 7.0, "amt": 5584.0, "unit": 797.7142857142857, "share": 0.010365214163070213}, {"name": "武雪燕", "cnt": 7.0, "amt": 5570.0, "unit": 795.7142857142857, "share": 0.010339226878277414}, {"name": "陈亚琼", "cnt": 16.0, "amt": 5051.0, "unit": 315.6875, "share": 0.00937584110631584}, {"name": "韩玲", "cnt": 2.0, "amt": 4152.0, "unit": 2076.0, "share": 0.007707086175692607}, {"name": "张铠洁", "cnt": 11.0, "amt": 3908.0, "unit": 355.27272727272725, "share": 0.007254164926446703}, {"name": "金欢", "cnt": 6.0, "amt": 3820.0, "unit": 636.6666666666666, "share": 0.007090816279177688}, {"name": "陈丽琴", "cnt": 10.0, "amt": 3796.0, "unit": 379.6, "share": 0.00704626664810432}, {"name": "单德瑞", "cnt": 3.0, "amt": 3606.0, "unit": 1202.0, "share": 0.006693582068773493}, {"name": "孟佳兴", "cnt": 21.0, "amt": 3510.0, "unit": 167.14285714285714, "share": 0.006515383544480022}, {"name": "陈愈", "cnt": 3.0, "amt": 3457.0, "unit": 1152.3333333333333, "share": 0.006417003109193002}, {"name": "吴晓菲", "cnt": 5.0, "amt": 3423.0, "unit": 684.6, "share": 0.006353891131839064}, {"name": "王梅", "cnt": 10.0, "amt": 3307.0, "unit": 330.7, "share": 0.006138567914984454}, {"name": "张义", "cnt": 4.0, "amt": 3207.0, "unit": 801.75, "share": 0.005952944452178755}, {"name": "张帆", "cnt": 3.0, "amt": 3164.0, "unit": 1054.6666666666667, "share": 0.005873126363172305}, {"name": "板治蕊", "cnt": 10.0, "amt": 2979.0, "unit": 297.9, "share": 0.005529722956981763}, {"name": "许洪洋", "cnt": 11.0, "amt": 2922.0, "unit": 265.6363636363636, "share": 0.005423917583182514}, {"name": "刘自元", "cnt": 10.0, "amt": 2895.0, "unit": 289.5, "share": 0.005373799248224976}, {"name": "张航", "cnt": 5.0, "amt": 2786.0, "unit": 557.2, "share": 0.005171469673766764}, {"name": "李欣", "cnt": 7.0, "amt": 2731.0, "unit": 390.14285714285717, "share": 0.00506937676922363}, {"name": "王晶晶", "cnt": 2.0, "amt": 2652.0, "unit": 1326.0, "share": 0.004922734233607128}, {"name": "曾燕凤", "cnt": 4.0, "amt": 2628.0, "unit": 657.0, "share": 0.0048781846025337606}, {"name": "陈越", "cnt": 6.0, "amt": 2609.0, "unit": 434.8333333333333, "share": 0.004842916144600678}, {"name": "孔梦云", "cnt": 9.0, "amt": 2577.0, "unit": 286.3333333333333, "share": 0.004783516636502854}, {"name": "陈元元", "cnt": 10.0, "amt": 2552.0, "unit": 255.2, "share": 0.00473711077080143}, {"name": "王静", "cnt": 12.0, "amt": 2490.0, "unit": 207.5, "share": 0.004622024223861896}, {"name": "付春艳", "cnt": 13.0, "amt": 2446.0, "unit": 188.15384615384616, "share": 0.004540349900227389}, {"name": "武芊", "cnt": 4.0, "amt": 2406.0, "unit": 601.5, "share": 0.004466100515105109}, {"name": "张洪畅", "cnt": 4.0, "amt": 2400.0, "unit": 600.0, "share": 0.004454963107336767}, {"name": "颜志钢", "cnt": 1.0, "amt": 2392.0, "unit": 2392.0, "share": 0.004440113230312312}], "requester_top_cnt": [{"name": "颜敬松", "cnt": 25.0, "amt": 6178.0, "unit": 247.12, "share": 0.011467817532136063}, {"name": "王平", "cnt": 21.0, "amt": 23481.0, "unit": 1118.142857142857, "share": 0.0435862453014061}, {"name": "孟佳兴", "cnt": 21.0, "amt": 3510.0, "unit": 167.14285714285714, "share": 0.006515383544480022}, {"name": "李一菲", "cnt": 18.0, "amt": 15595.0, "unit": 866.3888888888889, "share": 0.028947979024548702}, {"name": "叶瑞铨", "cnt": 17.0, "amt": 16696.0, "unit": 982.1176470588235, "share": 0.030991693350039446}, {"name": "陈亚琼", "cnt": 16.0, "amt": 5051.0, "unit": 315.6875, "share": 0.00937584110631584}, {"name": "包彤", "cnt": 14.0, "amt": 25205.0, "unit": 1800.357142857143, "share": 0.046786393800176344}, {"name": "李璐", "cnt": 14.0, "amt": 8454.0, "unit": 603.8571428571429, "share": 0.015692607545593762}, {"name": "付春艳", "cnt": 13.0, "amt": 2446.0, "unit": 188.15384615384616, "share": 0.004540349900227389}, {"name": "李海东", "cnt": 12.0, "amt": 1931.0, "unit": 160.91666666666666, "share": 0.003584389066778041}, {"name": "王静", "cnt": 12.0, "amt": 2490.0, "unit": 207.5, "share": 0.004622024223861896}, {"name": "毛军委", "cnt": 12.0, "amt": 2111.0, "unit": 175.91666666666666, "share": 0.003918511299828298}, {"name": "吴颖杰", "cnt": 12.0, "amt": 6643.0, "unit": 553.5833333333334, "share": 0.012330966634182561}, {"name": "陈宇佳", "cnt": 12.0, "amt": 12675.0, "unit": 1056.25, "share": 0.0235277739106223}, {"name": "罗贝", "cnt": 12.0, "amt": 1920.0, "unit": 160.0, "share": 0.003563970485869414}, {"name": "孙藤", "cnt": 11.0, "amt": 1382.0, "unit": 125.63636363636364, "share": 0.002565316255974755}, {"name": "许洪洋", "cnt": 11.0, "amt": 2922.0, "unit": 265.6363636363636, "share": 0.005423917583182514}, {"name": "张铠洁", "cnt": 11.0, "amt": 3908.0, "unit": 355.27272727272725, "share": 0.007254164926446703}, {"name": "板治蕊", "cnt": 10.0, "amt": 2979.0, "unit": 297.9, "share": 0.005529722956981763}, {"name": "段彬彬", "cnt": 10.0, "amt": 1450.0, "unit": 145.0, "share": 0.0026915402106826303}, {"name": "白宠东", "cnt": 10.0, "amt": 2177.0, "unit": 217.7, "share": 0.00404102278528006}, {"name": "杨波", "cnt": 10.0, "amt": 1150.0, "unit": 115.0, "share": 0.0021346698222655344}, {"name": "陈元元", "cnt": 10.0, "amt": 2552.0, "unit": 255.2, "share": 0.00473711077080143}, {"name": "刘自元", "cnt": 10.0, "amt": 2895.0, "unit": 289.5, "share": 0.005373799248224976}, {"name": "崔营", "cnt": 10.0, "amt": 2098.0, "unit": 209.8, "share": 0.0038943802496635574}, {"name": "王梅", "cnt": 10.0, "amt": 3307.0, "unit": 330.7, "share": 0.006138567914984454}, {"name": "陈丽琴", "cnt": 10.0, "amt": 3796.0, "unit": 379.6, "share": 0.00704626664810432}, {"name": "王彪", "cnt": 9.0, "amt": 2322.0, "unit": 258.0, "share": 0.004310176806348322}, {"name": "孔梦云", "cnt": 9.0, "amt": 2577.0, "unit": 286.3333333333333, "share": 0.004783516636502854}, {"name": "范文凯", "cnt": 9.0, "amt": 2099.0, "unit": 233.22222222222223, "share": 0.0038962364842916146}], "cost_bands": [{"band": "100元以下", "amt": 5786.0, "share": 0.010740173557937722, "rows": 111, "row_share": 0.14490861618798956}, {"band": "100-299元", "amt": 45755.0, "share": 0.08493201540674741, "rows": 250, "row_share": 0.3263707571801567}, {"band": "300-599元", "amt": 70200.0, "share": 0.13030767088960044, "rows": 160, "row_share": 0.20887728459530025}, {"band": "600-999元", "amt": 80434.0, "share": 0.14930437607313565, "rows": 106, "row_share": 0.13838120104438642}, {"band": "1000元及以上", "amt": 336550.0, "share": 0.6247157640725788, "rows": 139, "row_share": 0.1814621409921671}], "concentration": {"CR1": 0.046786393800176344, "CR3": 0.12136433245162188, "CR5": 0.18056893591349946, "CR10": 0.27036614228038425, "CR20": 0.3542215416028586, "CR50": 0.5000269154021069, "HHI": 109.03843635546424, "top20_share": 0.3542215416028586, "tail80_share": 0.6457784583971413}, "matrix_month_dept1": {"2026.01": {"电商运营中心": 95.0, "广东大区": 45687.0, "华北大区": 41450.0, "人力行政中心": 1206.0, "商品定制中心": 7.0, "上海大区": 28921.0, "深桂大区": 42536.0, "食品采购中心": 288.0, "市场营销中心": 95.0, "苏皖大区": 39787.0, "销售中台": 61645.0, "战略合作中心": 10282.0, "浙闽大区": 21598.0, "中西大区": 25421.0}, "2026.02": {"广东大区": 6788.0, "华北大区": 14941.0, "商品定制中心": 86.0, "上海大区": 10682.0, "深桂大区": 10543.0, "市场营销中心": 81.0, "苏皖大区": 7771.0, "销售中台": 32485.0, "战略合作中心": 1869.0, "浙闽大区": 7631.0, "中西大区": 1992.0}, "2026.03": {"广东大区": 4911.0, "华北大区": 12807.0, "人力行政中心": 500.0, "商品定制中心": 4573.0, "上海大区": 8682.0, "深桂大区": 13938.0, "市场营销中心": 2147.0, "苏皖大区": 2899.0, "销售中台": 59189.0, "战略合作中心": 6373.0, "浙闽大区": 6470.0, "中西大区": 2349.0}}, "raw_missing": {"2026.01": {"rows": 417.0, "一级部门空值率": 0.9640287769784173, "二级部门空值率": 0.9280575539568345, "三级部门空值率": 0.8345323741007195, "需求方空值率": 0.002398081534772182}, "2026.02": {"rows": 200.0, "一级部门空值率": 0.94, "二级部门空值率": 0.9, "三级部门空值率": 0.68, "需求方空值率": 0.005}, "2026.03": {"rows": 152.0, "一级部门空值率": 0.9144736842105263, "二级部门空值率": 0.8289473684210527, "三级部门空值率": 0.6447368421052632, "需求方空值率": 0.006578947368421052}}, "records": [{"month": "2026.01", "dept1": "电商运营中心", "dept2": "会员店运营部", "dept3": "未细分", "requester": "薛一璇", "count": 2.0, "amount": 95.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东解决方案部", "dept3": "未细分", "requester": "胡珀", "count": 1.0, "amount": 38.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东解决方案部", "dept3": "广东销售运营组", "requester": "杨颖娴", "count": 1.0, "amount": 100.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东支持部", "dept3": "未细分", "requester": "谢映苗", "count": 1.0, "amount": 35.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "东莞站", "requester": "胡碧云", "count": 1.0, "amount": 270.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "陈学妙", "count": 2.0, "amount": 568.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "郭雷生", "count": 1.0, "amount": 720.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "郭丽", "count": 2.0, "amount": 686.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "黄锐聪", "count": 1.0, "amount": 194.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "李启宇", "count": 1.0, "amount": 180.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "李小宁", "count": 3.0, "amount": 271.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "林辅章", "count": 1.0, "amount": 132.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "刘秋梅", "count": 1.0, "amount": 480.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "卢奇萤", "count": 1.0, "amount": 150.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "罗平", "count": 3.0, "amount": 796.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "罗兴隆", "count": 2.0, "amount": 220.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "万涛", "count": 2.0, "amount": 394.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "翁浩荣", "count": 1.0, "amount": 514.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "朱秀心", "count": 3.0, "amount": 1221.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "崔慧妍", "count": 3.0, "amount": 843.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "郭思健", "count": 1.0, "amount": 166.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "李毅超", "count": 2.0, "amount": 205.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "梁永豪", "count": 1.0, "amount": 502.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "林扬", "count": 1.0, "amount": 570.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "孙颖梅", "count": 5.0, "amount": 1817.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "杨晶莹", "count": 2.0, "amount": 350.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "叶嘉杰", "count": 6.0, "amount": 1124.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "余妍", "count": 4.0, "amount": 2318.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "詹小蓓", "count": 1.0, "amount": 254.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "张小于", "count": 1.0, "amount": 55.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "朱琳", "count": 4.0, "amount": 813.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "板治蕊", "count": 9.0, "amount": 2924.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "陈丽", "count": 3.0, "amount": 1011.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "范安娜", "count": 1.0, "amount": 664.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "何娇娇", "count": 3.0, "amount": 338.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "黄光明", "count": 2.0, "amount": 388.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "廖鑫", "count": 1.0, "amount": 97.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "林晓玲", "count": 1.0, "amount": 208.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "刘权", "count": 3.0, "amount": 624.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "刘婉冰", "count": 1.0, "amount": 327.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "曾选木", "count": 2.0, "amount": 426.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "赵梓君", "count": 1.0, "amount": 25.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "白晓玲", "count": 3.0, "amount": 1862.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "白艳玲", "count": 3.0, "amount": 596.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "樊叶梅", "count": 3.0, "amount": 652.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "符蓉", "count": 3.0, "amount": 627.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "黄小英", "count": 2.0, "amount": 286.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "焦柏超", "count": 3.0, "amount": 228.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "王嘉琪", "count": 1.0, "amount": 186.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "颜志钢", "count": 1.0, "amount": 2392.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "林健勤", "count": 3.0, "amount": 191.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "龙明东", "count": 1.0, "amount": 796.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "卢瑞燕", "count": 3.0, "amount": 812.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "罗瑛婷", "count": 2.0, "amount": 308.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "莫佩欣", "count": 3.0, "amount": 1733.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "谭惠雯", "count": 2.0, "amount": 405.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "吴继春", "count": 1.0, "amount": 340.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "谢秋婷", "count": 4.0, "amount": 1377.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "许林婷", "count": 2.0, "amount": 348.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "杨柳", "count": 1.0, "amount": 234.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "杨青", "count": 2.0, "amount": 1116.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州重点项目组", "requester": "林寿德", "count": 1.0, "amount": 1986.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州重点项目组", "requester": "罗婷", "count": 2.0, "amount": 420.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州重点项目组", "requester": "肖婷婷", "count": 1.0, "amount": 234.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "佛山站", "requester": "谭玲敏", "count": 1.0, "amount": 156.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "佛山站", "requester": "韦晓红", "count": 2.0, "amount": 470.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "佛山站", "requester": "魏千翔", "count": 4.0, "amount": 1247.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "佛山站", "requester": "杨琪", "count": 1.0, "amount": 508.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "佛山站", "requester": "朱海思", "count": 1.0, "amount": 112.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "中山站", "requester": "汪淑珍", "count": 1.0, "amount": 300.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "中山站", "requester": "吴文俊", "count": 2.0, "amount": 173.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "中山站", "requester": "吴玉静", "count": 1.0, "amount": 45.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "珠海站", "requester": "冯柳娟", "count": 1.0, "amount": 131.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "珠海站", "requester": "金莎", "count": 3.0, "amount": 646.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "珠海站", "requester": "李晓玲", "count": 7.0, "amount": 1630.0}, {"month": "2026.01", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "珠海站", "requester": "张浪彬", "count": 1.0, "amount": 122.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北支持部", "dept3": "未细分", "requester": "金燕", "count": 1.0, "amount": 113.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "高英欣", "count": 3.0, "amount": 427.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "姜海燕", "count": 1.0, "amount": 49.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "李海东", "count": 9.0, "amount": 1020.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "李军", "count": 2.0, "amount": 1224.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "王静", "count": 7.0, "amount": 1060.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "陈士强", "count": 2.0, "amount": 283.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "姜雪纯", "count": 1.0, "amount": 71.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "李敏02", "count": 1.0, "amount": 65.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "李天天", "count": 2.0, "amount": 299.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "张梦琦", "count": 2.0, "amount": 392.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京通信组", "requester": "刘旭", "count": 1.0, "amount": 442.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京通信组", "requester": "罗瑜", "count": 1.0, "amount": 921.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京通信组", "requester": "郑美琦", "count": 1.0, "amount": 586.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京卫健组", "requester": "葛贵龙", "count": 2.0, "amount": 374.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京卫健组", "requester": "景龙", "count": 1.0, "amount": 45.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京卫健组", "requester": "李欣", "count": 5.0, "amount": 2401.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京卫健组", "requester": "许强", "count": 3.0, "amount": 510.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "樊晓天", "count": 2.0, "amount": 235.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "王彪", "count": 6.0, "amount": 655.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "王文超", "count": 3.0, "amount": 672.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "张国鹏", "count": 1.0, "amount": 62.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "张洪畅", "count": 4.0, "amount": 2400.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "赵双城", "count": 1.0, "amount": 147.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "单德瑞", "count": 2.0, "amount": 2306.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "单石磊", "count": 1.0, "amount": 173.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "段彬彬", "count": 5.0, "amount": 740.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "冯博", "count": 1.0, "amount": 450.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "孔梦云", "count": 5.0, "amount": 2171.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "李建东", "count": 6.0, "amount": 948.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "李彦威", "count": 2.0, "amount": 234.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "刘玉", "count": 1.0, "amount": 236.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "马亚婷", "count": 3.0, "amount": 645.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "欧阳彪彪", "count": 1.0, "amount": 75.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "孙海桃", "count": 2.0, "amount": 317.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "王彩彩", "count": 4.0, "amount": 743.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "王棋", "count": 3.0, "amount": 466.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "于轩", "count": 1.0, "amount": 202.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "张义", "count": 3.0, "amount": 3097.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "付春艳", "count": 8.0, "amount": 1583.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "侯健", "count": 5.0, "amount": 1490.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "黄闯", "count": 2.0, "amount": 122.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "李建苹", "count": 4.0, "amount": 700.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "李敏", "count": 2.0, "amount": 490.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "李伟昕", "count": 5.0, "amount": 1035.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "李莹洁", "count": 2.0, "amount": 496.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "卢时光", "count": 3.0, "amount": 318.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "罗文娟", "count": 2.0, "amount": 116.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "齐丹", "count": 2.0, "amount": 171.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "王崴佳", "count": 3.0, "amount": 1835.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "魏春", "count": 2.0, "amount": 330.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "张帆", "count": 2.0, "amount": 90.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "张兰宝", "count": 1.0, "amount": 130.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "青岛站", "requester": "王宝艳", "count": 1.0, "amount": 224.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "青岛站", "requester": "张腾飞", "count": 1.0, "amount": 35.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "白宠东", "count": 8.0, "amount": 1247.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "范文凯", "count": 4.0, "amount": 541.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "耿鑫", "count": 1.0, "amount": 338.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "谷辰", "count": 5.0, "amount": 514.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "李爽", "count": 1.0, "amount": 66.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "李颖", "count": 4.0, "amount": 1003.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "裴允昂", "count": 3.0, "amount": 453.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "唐雪", "count": 1.0, "amount": 300.0}, {"month": "2026.01", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "张永峰", "count": 5.0, "amount": 567.0}, {"month": "2026.01", "dept1": "人力行政中心", "dept2": "华东人力行政部", "dept3": "未细分", "requester": "陆文斌", "count": 1.0, "amount": 1206.0}, {"month": "2026.01", "dept1": "商品定制中心", "dept2": "综合办", "dept3": "未细分", "requester": "杨吉莉", "count": 1.0, "amount": 7.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "解决方案部", "dept3": "未细分", "requester": "王楠楠", "count": 1.0, "amount": 278.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海销售助理部", "dept3": "未细分", "requester": "王晶晶", "count": 1.0, "amount": 320.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海销售助理部", "dept3": "未细分", "requester": "张李洁", "count": 2.0, "amount": 273.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "秦玉梅", "count": 1.0, "amount": 99.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "沈抗抗", "count": 2.0, "amount": 139.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "施竹丽", "count": 2.0, "amount": 261.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "张亮", "count": 1.0, "amount": 101.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "周美兰", "count": 6.0, "amount": 616.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "高世一", "count": 4.0, "amount": 364.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "李文静", "count": 2.0, "amount": 542.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "李衍澎", "count": 6.0, "amount": 516.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "梁少丽", "count": 5.0, "amount": 753.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "王茜", "count": 8.0, "amount": 2079.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "王玮", "count": 1.0, "amount": 180.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "曾祥雷", "count": 1.0, "amount": 73.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "张雪", "count": 3.0, "amount": 345.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海卫生行业组", "requester": "狄家庆", "count": 3.0, "amount": 183.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海卫生行业组", "requester": "孔祥伟", "count": 3.0, "amount": 765.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海卫生行业组", "requester": "毛军委", "count": 6.0, "amount": 840.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海卫生行业组", "requester": "王帅", "count": 1.0, "amount": 29.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海卫生行业组", "requester": "张泽楷", "count": 1.0, "amount": 460.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海文教行业组", "requester": "高佳", "count": 1.0, "amount": 12.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海文教行业组", "requester": "胡小双", "count": 1.0, "amount": 85.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海文教行业组", "requester": "刘莎莎", "count": 1.0, "amount": 150.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海文教行业组", "requester": "王麒", "count": 2.0, "amount": 240.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海文教行业组", "requester": "徐雍月", "count": 3.0, "amount": 452.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海文教行业组", "requester": "许浩", "count": 2.0, "amount": 196.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海项目组", "requester": "杨波", "count": 6.0, "amount": 373.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海项目组", "requester": "曾欣欣", "count": 4.0, "amount": 579.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海项目组", "requester": "张斌", "count": 5.0, "amount": 371.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "陈元元", "count": 8.0, "amount": 2268.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "代森", "count": 3.0, "amount": 297.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "谷文静", "count": 3.0, "amount": 345.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "冀俊杰", "count": 1.0, "amount": 55.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "金欢", "count": 2.0, "amount": 2303.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "梁岳", "count": 1.0, "amount": 77.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "刘宇豪", "count": 1.0, "amount": 219.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "王莉", "count": 2.0, "amount": 1240.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "吴君豪", "count": 3.0, "amount": 221.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "杜金娟", "count": 6.0, "amount": 543.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "康潇月", "count": 1.0, "amount": 438.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "孙小飞", "count": 3.0, "amount": 407.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "余辉", "count": 1.0, "amount": 128.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "俞嘉莉", "count": 1.0, "amount": 154.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "郑风霞", "count": 1.0, "amount": 67.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "郑重", "count": 1.0, "amount": 62.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "郑仲", "count": 1.0, "amount": 242.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "周凌云", "count": 1.0, "amount": 114.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "祝大帅", "count": 5.0, "amount": 1802.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "程苗", "count": 1.0, "amount": 706.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "黄洁梅", "count": 2.0, "amount": 873.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "黄书霞", "count": 5.0, "amount": 925.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "李志伟", "count": 2.0, "amount": 350.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "麻付强", "count": 2.0, "amount": 485.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "尚艳", "count": 1.0, "amount": 145.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "陶冶", "count": 2.0, "amount": 233.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "田甜", "count": 2.0, "amount": 118.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "王梦丹", "count": 3.0, "amount": 829.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "吴艳", "count": 4.0, "amount": 815.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "夏莉莉", "count": 2.0, "amount": 155.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "杨御妹", "count": 3.0, "amount": 471.0}, {"month": "2026.01", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "张俊申", "count": 1.0, "amount": 160.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深桂用户拓展部", "dept3": "未细分", "requester": "梁宇轩", "count": 1.0, "amount": 100.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深桂用户拓展部", "dept3": "未细分", "requester": "张雯", "count": 1.0, "amount": 448.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "柴燕", "count": 1.0, "amount": 530.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "陈宝颖", "count": 2.0, "amount": 164.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "李傲霜", "count": 1.0, "amount": 93.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "李展东", "count": 2.0, "amount": 275.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "廖名刻", "count": 2.0, "amount": 673.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "刘自元", "count": 5.0, "amount": 1684.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "屈洪涛", "count": 3.0, "amount": 319.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "王君峰", "count": 2.0, "amount": 546.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "叶宇", "count": 2.0, "amount": 524.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "钟永权", "count": 1.0, "amount": 102.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "周尧臻", "count": 2.0, "amount": 210.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳机关金融行业组", "requester": "崔梦迪", "count": 1.0, "amount": 280.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳机关金融行业组", "requester": "黄思思", "count": 2.0, "amount": 147.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳机关金融行业组", "requester": "李静", "count": 4.0, "amount": 2034.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳机关金融行业组", "requester": "孙藤", "count": 8.0, "amount": 884.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳机关金融行业组", "requester": "吴小燕", "count": 1.0, "amount": 53.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳机关金融行业组", "requester": "张建刚", "count": 2.0, "amount": 263.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "陈贤杰", "count": 3.0, "amount": 999.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "林志荣", "count": 1.0, "amount": 920.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "唐晓蓉", "count": 3.0, "amount": 127.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "童佳雯", "count": 1.0, "amount": 224.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "杨美玲", "count": 3.0, "amount": 64.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "曾漩", "count": 3.0, "amount": 1048.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "赵桂双", "count": 1.0, "amount": 644.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "晏兴", "count": 1.0, "amount": 74.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳金融行业组", "requester": "陈晓宣", "count": 3.0, "amount": 1581.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳金融行业组", "requester": "陈愈", "count": 2.0, "amount": 3327.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳金融行业组", "requester": "刘嘉顺", "count": 2.0, "amount": 1024.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳金融行业组", "requester": "秦雅", "count": 1.0, "amount": 25.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳金融行业组", "requester": "朱海广", "count": 2.0, "amount": 665.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳金融行业组", "requester": "朱惠琪", "count": 6.0, "amount": 648.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳能源行业组", "requester": "程磊", "count": 2.0, "amount": 240.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳能源行业组", "requester": "冯冠中", "count": 2.0, "amount": 201.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳能源行业组", "requester": "张致远", "count": 3.0, "amount": 578.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳能源行业组", "requester": "庄万妮", "count": 1.0, "amount": 329.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "陈亚琼", "count": 7.0, "amount": 2252.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "武芊", "count": 2.0, "amount": 556.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "许中婷", "count": 2.0, "amount": 4043.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "颜敬松", "count": 14.0, "amount": 3752.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "姚子欢", "count": 4.0, "amount": 534.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "郭黎明", "count": 5.0, "amount": 1404.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "李鹏", "count": 1.0, "amount": 249.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "龙礼林", "count": 4.0, "amount": 5084.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "邵阳", "count": 1.0, "amount": 100.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "杨大伏", "count": 3.0, "amount": 282.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳重点项目组", "requester": "崔营", "count": 3.0, "amount": 612.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳重点项目组", "requester": "何贝丝", "count": 2.0, "amount": 610.0}, {"month": "2026.01", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳重点项目组", "requester": "梁美基", "count": 3.0, "amount": 1011.0}, {"month": "2026.01", "dept1": "食品采购中心", "dept2": "未细分", "dept3": "未细分", "requester": "朱政伟", "count": 1.0, "amount": 288.0}, {"month": "2026.01", "dept1": "市场营销中心", "dept2": "未细分", "dept3": "未细分", "requester": "向培瑶", "count": 1.0, "amount": 95.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "解决方案部(1)", "dept3": "未细分", "requester": "王捷", "count": 1.0, "amount": 294.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "常锡站", "requester": "巢闽杰", "count": 2.0, "amount": 660.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "常锡站", "requester": "储佩", "count": 1.0, "amount": 13.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "常锡站", "requester": "孙永亮", "count": 3.0, "amount": 544.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "常锡站", "requester": "魏星星", "count": 1.0, "amount": 416.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "常锡站", "requester": "庄源武", "count": 6.0, "amount": 1305.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "常锡站", "requester": "邹啸", "count": 1.0, "amount": 220.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "合肥二组", "requester": "杨轲", "count": 2.0, "amount": 650.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "合肥一组", "requester": "高明欢", "count": 2.0, "amount": 24.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "合肥一组", "requester": "刘鑫", "count": 1.0, "amount": 440.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "合肥一组", "requester": "赵梦", "count": 1.0, "amount": 273.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "曹靖", "count": 2.0, "amount": 627.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "傅仕阳", "count": 3.0, "amount": 325.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "李欣明", "count": 2.0, "amount": 1272.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "刘德胜", "count": 3.0, "amount": 649.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "刘倩霞", "count": 2.0, "amount": 724.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "吴晓菲", "count": 3.0, "amount": 2912.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "徐芮", "count": 1.0, "amount": 132.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "许满志", "count": 1.0, "amount": 86.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "薛飞飞", "count": 2.0, "amount": 142.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "张萌", "count": 3.0, "amount": 1246.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "杜文文", "count": 3.0, "amount": 433.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "郭建", "count": 2.0, "amount": 660.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "郝大臣", "count": 3.0, "amount": 1062.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "祁建荣", "count": 3.0, "amount": 837.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "王金亮", "count": 4.0, "amount": 1916.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "吴飞", "count": 4.0, "amount": 188.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "吴炜超", "count": 1.0, "amount": 26.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "杨旭奎", "count": 3.0, "amount": 752.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "张小瑞", "count": 2.0, "amount": 158.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南通站", "requester": "陈然", "count": 1.0, "amount": 61.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南通站", "requester": "李燚", "count": 1.0, "amount": 320.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南通站", "requester": "石玲玲", "count": 4.0, "amount": 1638.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "陈宏艳", "count": 6.0, "amount": 1568.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "崔巍", "count": 3.0, "amount": 659.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "李婧", "count": 5.0, "amount": 1746.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "沈振旋", "count": 3.0, "amount": 763.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "王梅", "count": 7.0, "amount": 2529.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "许洪洋", "count": 9.0, "amount": 2482.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "曹贲", "count": 4.0, "amount": 918.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "高炜杰", "count": 2.0, "amount": 422.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "何月阳", "count": 1.0, "amount": 35.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "胡蓉", "count": 5.0, "amount": 1428.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "匡云龙", "count": 1.0, "amount": 280.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "宋怡雯", "count": 4.0, "amount": 1477.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "孙传宴", "count": 2.0, "amount": 478.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "吴晓路", "count": 3.0, "amount": 1125.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "杨书俊", "count": 3.0, "amount": 1054.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "姚瑶", "count": 3.0, "amount": 1084.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "镇扬站", "requester": "柏年", "count": 2.0, "amount": 404.0}, {"month": "2026.01", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "镇扬站", "requester": "潘俊", "count": 1.0, "amount": 330.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营二组", "requester": "李博妍", "count": 6.0, "amount": 9064.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营二组", "requester": "李一菲", "count": 5.0, "amount": 5702.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营二组", "requester": "张铠洁", "count": 6.0, "amount": 1919.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营三组", "requester": "吴颖杰", "count": 6.0, "amount": 4706.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营三组", "requester": "武雪燕", "count": 1.0, "amount": 2954.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营三组", "requester": "张航", "count": 3.0, "amount": 1362.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "包彤", "count": 7.0, "amount": 10339.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "陈宇佳", "count": 5.0, "amount": 5265.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "李璐", "count": 6.0, "amount": 3950.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "王平", "count": 8.0, "amount": 9285.0}, {"month": "2026.01", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "叶瑞铨", "count": 11.0, "amount": 7099.0}, {"month": "2026.01", "dept1": "战略合作中心", "dept2": "供应链MRO部", "dept3": "未细分", "requester": "刘佳", "count": 1.0, "amount": 766.0}, {"month": "2026.01", "dept1": "战略合作中心", "dept2": "供应链MRO部", "dept3": "未细分", "requester": "唐慧泉", "count": 1.0, "amount": 2267.0}, {"month": "2026.01", "dept1": "战略合作中心", "dept2": "商品开发部", "dept3": "未细分", "requester": "王辉", "count": 1.0, "amount": 9.0}, {"month": "2026.01", "dept1": "战略合作中心", "dept2": "文教卫部", "dept3": "未细分", "requester": "曾燕凤", "count": 3.0, "amount": 2361.0}, {"month": "2026.01", "dept1": "战略合作中心", "dept2": "战略能源部", "dept3": "未细分", "requester": "苏浩", "count": 5.0, "amount": 543.0}, {"month": "2026.01", "dept1": "战略合作中心", "dept2": "战略能源部", "dept3": "未细分", "requester": "臧富见", "count": 2.0, "amount": 225.0}, {"month": "2026.01", "dept1": "战略合作中心", "dept2": "战略通讯部", "dept3": "未细分", "requester": "白录轩", "count": 1.0, "amount": 869.0}, {"month": "2026.01", "dept1": "战略合作中心", "dept2": "战略通讯部", "dept3": "未细分", "requester": "闫霖琳", "count": 4.0, "amount": 650.0}, {"month": "2026.01", "dept1": "战略合作中心", "dept2": "战略制造部", "dept3": "未细分", "requester": "孟佳兴", "count": 14.0, "amount": 2549.0}, {"month": "2026.01", "dept1": "战略合作中心", "dept2": "总经办", "dept3": "未细分", "requester": "王萃芳", "count": 1.0, "amount": 43.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "解决方案部(2)", "dept3": "投标组", "requester": "徐艺洁", "count": 1.0, "amount": 1076.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "陈莉", "count": 2.0, "amount": 287.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "杜小娟", "count": 1.0, "amount": 209.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "李佳", "count": 2.0, "amount": 388.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "马鑫鹏", "count": 2.0, "amount": 195.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "陈丽琴", "count": 5.0, "amount": 1557.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "胡楠", "count": 3.0, "amount": 444.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "李杰", "count": 3.0, "amount": 1181.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "王天宇", "count": 1.0, "amount": 210.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "夏梦园", "count": 1.0, "amount": 208.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波政府机关行业组", "requester": "陈越", "count": 2.0, "amount": 946.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波政府机关行业组", "requester": "王国建", "count": 2.0, "amount": 292.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波政府机关行业组", "requester": "许耀耀", "count": 2.0, "amount": 286.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波政府机关行业组", "requester": "张世凯", "count": 2.0, "amount": 690.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波重点项目组", "requester": "任佳静", "count": 1.0, "amount": 19.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波重点项目组", "requester": "朱林超", "count": 1.0, "amount": 35.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "温州站", "requester": "陈宗", "count": 2.0, "amount": 96.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "温州站", "requester": "李建西", "count": 1.0, "amount": 140.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "温州站", "requester": "吴云鹏", "count": 1.0, "amount": 35.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "温州站", "requester": "张荣和", "count": 2.0, "amount": 413.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "温州站", "requester": "张玉霞", "count": 7.0, "amount": 1550.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州金融行业一组", "requester": "曹志锋", "count": 2.0, "amount": 200.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州金融行业一组", "requester": "王紫钰", "count": 2.0, "amount": 968.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州金融行业一组", "requester": "姚远", "count": 3.0, "amount": 420.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州能源交通行业组", "requester": "魏雪程", "count": 2.0, "amount": 675.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州能源交通行业组", "requester": "杨葵娜", "count": 2.0, "amount": 126.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州能源交通行业组", "requester": "张娟", "count": 4.0, "amount": 732.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州政府机关行业组", "requester": "陈恩乐", "count": 1.0, "amount": 61.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州政府机关行业组", "requester": "李为为", "count": 2.0, "amount": 195.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州政府机关行业组", "requester": "谢维东", "count": 3.0, "amount": 1206.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州重点项目组", "requester": "李腾飞", "count": 1.0, "amount": 130.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州重点项目组", "requester": "吕丹", "count": 1.0, "amount": 438.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "黄哲成", "count": 2.0, "amount": 207.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "蓝鑫", "count": 1.0, "amount": 114.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "卢娟", "count": 4.0, "amount": 1338.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "戚璐", "count": 2.0, "amount": 267.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "严玉", "count": 1.0, "amount": 205.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "姚建杰", "count": 6.0, "amount": 882.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "嘉兴站", "requester": "施建琴", "count": 2.0, "amount": 354.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "嘉兴站", "requester": "许黎娟", "count": 2.0, "amount": 156.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "嘉兴站", "requester": "俞钰万", "count": 4.0, "amount": 206.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "绍兴站", "requester": "段云云", "count": 2.0, "amount": 167.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "绍兴站", "requester": "倪桃李", "count": 1.0, "amount": 596.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "绍兴站", "requester": "王酉伦", "count": 3.0, "amount": 930.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "绍兴站", "requester": "吴斌", "count": 3.0, "amount": 547.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "绍兴站", "requester": "张金飞", "count": 1.0, "amount": 100.0}, {"month": "2026.01", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "绍兴站", "requester": "周俊屹", "count": 1.0, "amount": 121.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "未细分", "requester": "吴晗", "count": 6.0, "amount": 771.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉基建制造行业组", "requester": "别勇", "count": 3.0, "amount": 1328.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉基建制造行业组", "requester": "陈鹏-武汉", "count": 6.0, "amount": 1339.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉基建制造行业组", "requester": "程双清", "count": 6.0, "amount": 1219.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉基建制造行业组", "requester": "胡松", "count": 4.0, "amount": 583.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉基建制造行业组", "requester": "罗贝", "count": 12.0, "amount": 1920.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉基建制造行业组", "requester": "张轩", "count": 2.0, "amount": 332.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉金融行业组", "requester": "常明君", "count": 4.0, "amount": 522.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉金融行业组", "requester": "黄薇", "count": 8.0, "amount": 1745.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉金融行业组", "requester": "康哲飞", "count": 2.0, "amount": 438.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉金融行业组", "requester": "杨勇", "count": 3.0, "amount": 353.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "陈绪涛", "count": 6.0, "amount": 1291.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "胡帅帅", "count": 3.0, "amount": 415.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "黄佩文", "count": 1.0, "amount": 106.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "林茹", "count": 4.0, "amount": 661.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "石翔瑜", "count": 3.0, "amount": 299.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "魏欣蓓", "count": 2.0, "amount": 638.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "徐聪", "count": 1.0, "amount": 220.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "周靓", "count": 1.0, "amount": 234.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西销售助理部", "dept3": "未细分", "requester": "李国栋", "count": 2.0, "amount": 944.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "长沙站", "requester": "陈蓉", "count": 1.0, "amount": 148.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "长沙站", "requester": "邓梅丽", "count": 2.0, "amount": 657.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "长沙站", "requester": "蒋小花", "count": 1.0, "amount": 100.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "长沙站", "requester": "张婉莹", "count": 2.0, "amount": 447.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "成都站", "requester": "何光耀", "count": 2.0, "amount": 790.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "成都站", "requester": "唐天宁", "count": 1.0, "amount": 320.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "成都站", "requester": "张鹏成", "count": 3.0, "amount": 860.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "西安站", "requester": "贺玲", "count": 1.0, "amount": 120.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "西安站", "requester": "康帅奇", "count": 2.0, "amount": 736.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "西安站", "requester": "李佳伟", "count": 2.0, "amount": 355.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "西安站", "requester": "刘江", "count": 2.0, "amount": 296.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "西安站", "requester": "张恒", "count": 3.0, "amount": 592.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "西安站", "requester": "张宸睿", "count": 1.0, "amount": 148.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "郑州站", "requester": "刘莉", "count": 2.0, "amount": 456.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "郑州站", "requester": "刘婵", "count": 3.0, "amount": 1769.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "郑州站", "requester": "孙潇潇", "count": 1.0, "amount": 35.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "重庆站", "requester": "陈磊", "count": 1.0, "amount": 25.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "重庆站", "requester": "耿晓伟", "count": 1.0, "amount": 414.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "重庆站", "requester": "廖佳晖", "count": 6.0, "amount": 1031.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "重庆站", "requester": "刘美希", "count": 2.0, "amount": 192.0}, {"month": "2026.01", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "重庆站", "requester": "危昶", "count": 1.0, "amount": 572.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东解决方案部", "dept3": "广东市场推广组", "requester": "周绮华", "count": 1.0, "amount": 822.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东解决方案部", "dept3": "广东销售运营组", "requester": "杨颖娴", "count": 1.0, "amount": 100.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "刘秀容", "count": 2.0, "amount": 259.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "万涛", "count": 1.0, "amount": 25.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "崔慧妍", "count": 1.0, "amount": 140.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "郭思健", "count": 2.0, "amount": 442.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "孙颖梅", "count": 1.0, "amount": 395.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "叶嘉杰", "count": 1.0, "amount": 77.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "板治蕊", "count": 1.0, "amount": 55.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "何娇娇", "count": 1.0, "amount": 562.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "黄光明", "count": 2.0, "amount": 479.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "林晓玲", "count": 1.0, "amount": 171.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "刘权", "count": 2.0, "amount": 355.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "白晓玲", "count": 1.0, "amount": 89.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "陈少婵", "count": 1.0, "amount": 86.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "符蓉", "count": 1.0, "amount": 85.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "黄小英", "count": 1.0, "amount": 136.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "林健勤", "count": 2.0, "amount": 139.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "罗瑛婷", "count": 2.0, "amount": 242.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "麦耀文", "count": 2.0, "amount": 1134.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "谭惠雯", "count": 1.0, "amount": 55.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "许林婷", "count": 1.0, "amount": 286.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州重点项目组", "requester": "林寿德", "count": 1.0, "amount": 392.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州重点项目组", "requester": "肖婷婷", "count": 1.0, "amount": 130.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "佛山站", "requester": "魏千翔", "count": 1.0, "amount": 77.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "珠海站", "requester": "曹杰", "count": 1.0, "amount": 15.0}, {"month": "2026.02", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "珠海站", "requester": "冯柳娟", "count": 1.0, "amount": 40.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "李海东", "count": 1.0, "amount": 140.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "苏建凤", "count": 2.0, "amount": 346.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "王静", "count": 4.0, "amount": 1196.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "徐礼明", "count": 1.0, "amount": 140.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "陈士强", "count": 3.0, "amount": 592.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "姜雪纯", "count": 2.0, "amount": 220.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "李敏02", "count": 1.0, "amount": 110.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "张梦琦", "count": 1.0, "amount": 200.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京通信组", "requester": "张圃瑞", "count": 1.0, "amount": 154.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京卫健组", "requester": "葛贵龙", "count": 2.0, "amount": 224.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京卫健组", "requester": "李欣", "count": 1.0, "amount": 110.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "张国鹏", "count": 2.0, "amount": 399.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "赵双城", "count": 1.0, "amount": 746.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "单德瑞", "count": 1.0, "amount": 1300.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "单石磊", "count": 2.0, "amount": 337.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "段彬彬", "count": 4.0, "amount": 600.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "孔梦云", "count": 3.0, "amount": 391.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "李建东", "count": 1.0, "amount": 460.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "李敏04", "count": 3.0, "amount": 685.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "刘玉", "count": 1.0, "amount": 140.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "孙海桃", "count": 1.0, "amount": 286.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "王棋", "count": 3.0, "amount": 1244.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "张义", "count": 1.0, "amount": 110.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "付春艳", "count": 4.0, "amount": 793.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "侯健", "count": 1.0, "amount": 117.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "李伟昕", "count": 2.0, "amount": 183.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "罗文娟", "count": 2.0, "amount": 430.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "牛雪姣", "count": 1.0, "amount": 613.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "齐丹", "count": 1.0, "amount": 140.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "王崴佳", "count": 1.0, "amount": 110.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "魏春", "count": 1.0, "amount": 67.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "青岛站", "requester": "胡健", "count": 2.0, "amount": 446.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "白宠东", "count": 2.0, "amount": 930.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "范文凯", "count": 4.0, "amount": 956.0}, {"month": "2026.02", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "张永峰", "count": 1.0, "amount": 26.0}, {"month": "2026.02", "dept1": "商品定制中心", "dept2": "综合办", "dept3": "未细分", "requester": "李姣", "count": 2.0, "amount": 86.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海销售助理部", "dept3": "未细分", "requester": "王晶晶", "count": 1.0, "amount": 2332.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海销售助理部", "dept3": "未细分", "requester": "张李洁", "count": 1.0, "amount": 208.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "刘慧文", "count": 1.0, "amount": 260.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "沈抗抗", "count": 1.0, "amount": 55.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "施竹丽", "count": 4.0, "amount": 895.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "周亮", "count": 1.0, "amount": 142.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "周美兰", "count": 2.0, "amount": 100.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "崔海莲", "count": 2.0, "amount": 155.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "高世一", "count": 1.0, "amount": 66.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "王茜", "count": 1.0, "amount": 57.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海卫生行业组", "requester": "毛军委", "count": 6.0, "amount": 1271.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海文教行业组", "requester": "高佳", "count": 1.0, "amount": 281.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海文教行业组", "requester": "刘莎莎", "count": 2.0, "amount": 132.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海项目组", "requester": "杨波", "count": 2.0, "amount": 227.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海项目组", "requester": "张斌", "count": 1.0, "amount": 134.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "代森", "count": 1.0, "amount": 63.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "金欢", "count": 1.0, "amount": 168.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "梁岳", "count": 1.0, "amount": 1794.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "吴君豪", "count": 3.0, "amount": 490.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "易萌", "count": 1.0, "amount": 41.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "余辉", "count": 2.0, "amount": 531.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "郑风霞", "count": 1.0, "amount": 84.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "郑重", "count": 1.0, "amount": 137.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "周凌云", "count": 4.0, "amount": 410.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "祝大帅", "count": 1.0, "amount": 132.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "黄洁梅", "count": 1.0, "amount": 55.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "麻付强", "count": 1.0, "amount": 35.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "吴艳", "count": 1.0, "amount": 100.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "杨御妹", "count": 1.0, "amount": 161.0}, {"month": "2026.02", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "张璐", "count": 1.0, "amount": 166.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "刘自元", "count": 4.0, "amount": 1011.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "王君峰", "count": 1.0, "amount": 680.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "钟永权", "count": 2.0, "amount": 179.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳机关金融行业组", "requester": "黄思思", "count": 1.0, "amount": 734.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳机关金融行业组", "requester": "邱建", "count": 1.0, "amount": 130.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳机关金融行业组", "requester": "孙藤", "count": 3.0, "amount": 498.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "陈贤杰", "count": 1.0, "amount": 106.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "唐晓蓉", "count": 1.0, "amount": 23.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "童佳雯", "count": 1.0, "amount": 130.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "杨美玲", "count": 1.0, "amount": 43.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "张彬荣", "count": 1.0, "amount": 65.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳金融行业组", "requester": "朱惠琪", "count": 3.0, "amount": 244.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳能源行业组", "requester": "冯冠中", "count": 1.0, "amount": 110.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "陈亚琼", "count": 3.0, "amount": 1032.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "武芊", "count": 1.0, "amount": 1146.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "许中婷", "count": 2.0, "amount": 1157.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "颜敬松", "count": 6.0, "amount": 679.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "姚子欢", "count": 2.0, "amount": 216.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "邓彦祯", "count": 1.0, "amount": 55.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "郭黎明", "count": 1.0, "amount": 120.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "龙礼林", "count": 2.0, "amount": 386.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "杨大伏", "count": 1.0, "amount": 53.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳重点项目组", "requester": "崔营", "count": 6.0, "amount": 1362.0}, {"month": "2026.02", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳重点项目组", "requester": "梁美基", "count": 2.0, "amount": 384.0}, {"month": "2026.02", "dept1": "市场营销中心", "dept2": "未细分", "dept3": "未细分", "requester": "苏钰娟", "count": 1.0, "amount": 81.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "解决方案部", "dept3": "未细分", "requester": "王捷", "count": 2.0, "amount": 415.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "合肥二组", "requester": "孙辉", "count": 1.0, "amount": 117.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "合肥二组", "requester": "汪俊", "count": 1.0, "amount": 350.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "合肥一组", "requester": "丁红芳", "count": 1.0, "amount": 519.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "合肥一组", "requester": "赵梦", "count": 1.0, "amount": 466.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "李欣明", "count": 1.0, "amount": 65.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "吴晓菲", "count": 2.0, "amount": 511.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "徐芮", "count": 1.0, "amount": 120.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "郝大臣", "count": 1.0, "amount": 81.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "祁建荣", "count": 1.0, "amount": 220.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "吴飞", "count": 3.0, "amount": 409.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "杨旭奎", "count": 2.0, "amount": 229.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南通站", "requester": "陈然", "count": 1.0, "amount": 196.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "陈宏艳", "count": 1.0, "amount": 655.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "崔巍", "count": 1.0, "amount": 440.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "桑凤秋", "count": 1.0, "amount": 280.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "王梅", "count": 3.0, "amount": 778.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "许洪洋", "count": 1.0, "amount": 220.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "曹耀东", "count": 1.0, "amount": 43.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "曹贲", "count": 1.0, "amount": 110.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "高倩", "count": 3.0, "amount": 660.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "姚瑶", "count": 1.0, "amount": 590.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "镇扬站", "requester": "柏年", "count": 1.0, "amount": 232.0}, {"month": "2026.02", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "镇扬站", "requester": "樊烨", "count": 1.0, "amount": 65.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营二组", "requester": "李博妍", "count": 2.0, "amount": 1675.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营二组", "requester": "李一菲", "count": 7.0, "amount": 3075.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营二组", "requester": "张铠洁", "count": 5.0, "amount": 1989.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营三组", "requester": "吴颖杰", "count": 4.0, "amount": 1226.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营三组", "requester": "武雪燕", "count": 2.0, "amount": 136.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营三组", "requester": "张航", "count": 1.0, "amount": 1186.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "包彤", "count": 3.0, "amount": 5152.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "陈宇佳", "count": 3.0, "amount": 3582.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "李悦", "count": 2.0, "amount": 441.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "李璐", "count": 4.0, "amount": 1210.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "王平", "count": 5.0, "amount": 6387.0}, {"month": "2026.02", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "叶瑞铨", "count": 3.0, "amount": 6426.0}, {"month": "2026.02", "dept1": "战略合作中心", "dept2": "公共事务部", "dept3": "未细分", "requester": "韩玲", "count": 1.0, "amount": 448.0}, {"month": "2026.02", "dept1": "战略合作中心", "dept2": "文教卫部", "dept3": "未细分", "requester": "曾燕凤", "count": 1.0, "amount": 267.0}, {"month": "2026.02", "dept1": "战略合作中心", "dept2": "战略能源部", "dept3": "未细分", "requester": "苏浩", "count": 2.0, "amount": 86.0}, {"month": "2026.02", "dept1": "战略合作中心", "dept2": "战略能源部", "dept3": "未细分", "requester": "王恩曦", "count": 1.0, "amount": 110.0}, {"month": "2026.02", "dept1": "战略合作中心", "dept2": "战略能源部", "dept3": "未细分", "requester": "杨宁", "count": 2.0, "amount": 99.0}, {"month": "2026.02", "dept1": "战略合作中心", "dept2": "战略能源部", "dept3": "未细分", "requester": "臧富见", "count": 2.0, "amount": 822.0}, {"month": "2026.02", "dept1": "战略合作中心", "dept2": "战略通讯部", "dept3": "未细分", "requester": "闫霖琳", "count": 1.0, "amount": 37.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "解决方案部(1)", "dept3": "商城运营组", "requester": "肖志远", "count": 1.0, "amount": 356.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "陈莉", "count": 1.0, "amount": 150.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "杜小娟", "count": 2.0, "amount": 512.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "李佳", "count": 1.0, "amount": 100.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "陆生", "count": 2.0, "amount": 213.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "吴春明", "count": 1.0, "amount": 33.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "朱晓楠", "count": 1.0, "amount": 218.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "陈丽琴", "count": 2.0, "amount": 616.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "胡楠", "count": 1.0, "amount": 128.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "李杰", "count": 3.0, "amount": 385.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "王天宇", "count": 1.0, "amount": 160.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "夏梦园", "count": 1.0, "amount": 110.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波政府机关行业组", "requester": "王国建", "count": 1.0, "amount": 230.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "温州站", "requester": "吴云鹏", "count": 1.0, "amount": 41.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "温州站", "requester": "张玉霞", "count": 1.0, "amount": 230.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州金融行业一组", "requester": "陈金艳", "count": 1.0, "amount": 490.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州金融行业一组", "requester": "陈鹏辉", "count": 1.0, "amount": 184.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州金融行业一组", "requester": "王紫钰", "count": 1.0, "amount": 110.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州能源交通行业组", "requester": "魏雪程", "count": 1.0, "amount": 140.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州政府机关行业组", "requester": "李为为", "count": 2.0, "amount": 220.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州政府机关行业组", "requester": "马秋萍", "count": 1.0, "amount": 100.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州政府机关行业组", "requester": "潘锦佳", "count": 1.0, "amount": 600.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州政府机关行业组", "requester": "王玲", "count": 2.0, "amount": 279.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州政府机关行业组", "requester": "张桂聪", "count": 1.0, "amount": 162.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州重点项目组", "requester": "李腾飞", "count": 2.0, "amount": 845.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "黄哲成", "count": 1.0, "amount": 220.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "蓝鑫", "count": 1.0, "amount": 130.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "嘉兴站", "requester": "郭稚晖", "count": 2.0, "amount": 517.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "嘉兴站", "requester": "朱宇", "count": 1.0, "amount": 82.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "绍兴站", "requester": "王酉伦", "count": 1.0, "amount": 35.0}, {"month": "2026.02", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "绍兴站", "requester": "张金飞", "count": 1.0, "amount": 35.0}, {"month": "2026.02", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉金融行业组", "requester": "康哲飞", "count": 2.0, "amount": 255.0}, {"month": "2026.02", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "长沙站", "requester": "邓梅丽", "count": 1.0, "amount": 374.0}, {"month": "2026.02", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "长沙站", "requester": "张婉莹", "count": 1.0, "amount": 356.0}, {"month": "2026.02", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "成都站", "requester": "吴晓波", "count": 1.0, "amount": 45.0}, {"month": "2026.02", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "西安站", "requester": "贺玲", "count": 1.0, "amount": 236.0}, {"month": "2026.02", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "郑州站", "requester": "宋运美", "count": 1.0, "amount": 176.0}, {"month": "2026.02", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "重庆站", "requester": "李倩", "count": 1.0, "amount": 550.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东解决方案部", "dept3": "广东销售运营组", "requester": "杨颖娴", "count": 3.0, "amount": 300.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东支持部", "dept3": "未细分", "requester": "陈绿虹", "count": 1.0, "amount": 100.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "东莞站", "requester": "李智杨", "count": 1.0, "amount": 186.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "郭雷生", "count": 1.0, "amount": 130.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "罗平", "count": 1.0, "amount": 25.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "万涛", "count": 1.0, "amount": 130.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州能源制造组", "requester": "朱秀心", "count": 2.0, "amount": 527.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "林扬", "count": 1.0, "amount": 41.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州文教卫组", "requester": "孙颖梅", "count": 1.0, "amount": 26.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "刘权", "count": 2.0, "amount": 46.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "刘婉冰", "count": 2.0, "amount": 234.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州银行金融组", "requester": "赵梓君", "count": 1.0, "amount": 25.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "陈擎东", "count": 1.0, "amount": 136.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政府交通组", "requester": "肖小军", "count": 2.0, "amount": 430.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "林健勤", "count": 1.0, "amount": 25.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "罗瑛婷", "count": 2.0, "amount": 476.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "广东综合管理办公室", "dept3": "广州政企事业组", "requester": "伍仕祺", "count": 1.0, "amount": 640.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "佛山站", "requester": "陈相", "count": 1.0, "amount": 898.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "珠海站", "requester": "曹杰", "count": 1.0, "amount": 489.0}, {"month": "2026.03", "dept1": "广东大区", "dept2": "珠三角营销区", "dept3": "珠海站", "requester": "冯柳娟", "count": 1.0, "amount": 47.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "李海东", "count": 2.0, "amount": 771.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "苏建凤", "count": 1.0, "amount": 220.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "王静", "count": 1.0, "amount": 234.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京基建组", "requester": "徐礼明", "count": 1.0, "amount": 1202.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "陈士强", "count": 1.0, "amount": 308.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京金融组", "requester": "姜雪纯", "count": 1.0, "amount": 123.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京通信组", "requester": "郑美琦", "count": 1.0, "amount": 200.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京卫健组", "requester": "解文录", "count": 1.0, "amount": 241.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京卫健组", "requester": "李欣", "count": 1.0, "amount": 220.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京卫健组", "requester": "许强", "count": 3.0, "amount": 466.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "刘高鹏", "count": 1.0, "amount": 37.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "刘丽娟", "count": 4.0, "amount": 1254.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京文教组", "requester": "王彪", "count": 3.0, "amount": 1667.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "段彬彬", "count": 1.0, "amount": 110.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "孔梦云", "count": 1.0, "amount": 15.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "李敏04", "count": 2.0, "amount": 263.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "刘玉", "count": 1.0, "amount": 189.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "王棋", "count": 1.0, "amount": 250.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京项目组", "requester": "于轩", "count": 1.0, "amount": 100.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "付春艳", "count": 1.0, "amount": 70.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "侯健", "count": 1.0, "amount": 166.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "李伟昕", "count": 1.0, "amount": 516.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "卢时光", "count": 1.0, "amount": 69.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "王崴佳", "count": 1.0, "amount": 220.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "北京政企组", "requester": "张帆", "count": 1.0, "amount": 3074.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "范文凯", "count": 1.0, "amount": 602.0}, {"month": "2026.03", "dept1": "华北大区", "dept2": "华北综合办公室", "dept3": "天津站", "requester": "李颖", "count": 1.0, "amount": 220.0}, {"month": "2026.03", "dept1": "人力行政中心", "dept2": "华东人力行政部", "dept3": "未细分", "requester": "陆文斌", "count": 1.0, "amount": 500.0}, {"month": "2026.03", "dept1": "商品定制中心", "dept2": "综合办", "dept3": "未细分", "requester": "李姣", "count": 1.0, "amount": 1168.0}, {"month": "2026.03", "dept1": "商品定制中心", "dept2": "综合办", "dept3": "未细分", "requester": "刘情", "count": 3.0, "amount": 1433.0}, {"month": "2026.03", "dept1": "商品定制中心", "dept2": "综合办", "dept3": "未细分", "requester": "杨吉莉", "count": 2.0, "amount": 1580.0}, {"month": "2026.03", "dept1": "商品定制中心", "dept2": "综合办", "dept3": "未细分", "requester": "张倩怡", "count": 1.0, "amount": 392.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海销售助理部", "dept3": "未细分", "requester": "陈琪敏", "count": 1.0, "amount": 476.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海基建行业组", "requester": "施竹丽", "count": 2.0, "amount": 591.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "李衍澎", "count": 2.0, "amount": 854.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海能源行业组", "requester": "王玮", "count": 1.0, "amount": 146.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海卫生行业组", "requester": "苏龙军", "count": 1.0, "amount": 39.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海项目组", "requester": "杨波", "count": 2.0, "amount": 550.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海项目组", "requester": "张斌", "count": 3.0, "amount": 986.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "陈元元", "count": 2.0, "amount": 284.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "代森", "count": 2.0, "amount": 173.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "金欢", "count": 3.0, "amount": 1349.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "王莉", "count": 1.0, "amount": 238.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海银行金融行业组", "requester": "吴君豪", "count": 1.0, "amount": 243.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海政府机关行业组", "requester": "俞嘉莉", "count": 2.0, "amount": 337.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "程苗", "count": 1.0, "amount": 180.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "黄书霞", "count": 1.0, "amount": 190.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "尚艳", "count": 4.0, "amount": 895.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "王梦丹", "count": 1.0, "amount": 330.0}, {"month": "2026.03", "dept1": "上海大区", "dept2": "上海综合管理办公室", "dept3": "上海制造行业组", "requester": "张俊申", "count": 1.0, "amount": 821.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深桂用户拓展部", "dept3": "未细分", "requester": "张雯", "count": 3.0, "amount": 1506.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "陈宝颖", "count": 1.0, "amount": 120.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳基建行业组", "requester": "刘自元", "count": 1.0, "amount": 200.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳机关金融行业组", "requester": "张建刚", "count": 1.0, "amount": 686.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "陈贤杰", "count": 1.0, "amount": 15.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "唐晓蓉", "count": 1.0, "amount": 1540.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳交通通讯行业组", "requester": "童佳雯", "count": 1.0, "amount": 910.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳金融行业组", "requester": "陈愈", "count": 1.0, "amount": 130.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳能源行业组", "requester": "程磊", "count": 1.0, "amount": 130.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳能源行业组", "requester": "冯冠中", "count": 1.0, "amount": 142.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "陈亚琼", "count": 6.0, "amount": 1767.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "秦依秀", "count": 1.0, "amount": 129.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "武芊", "count": 1.0, "amount": 704.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "许中婷", "count": 2.0, "amount": 3617.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳平台运营组", "requester": "颜敬松", "count": 5.0, "amount": 1747.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "邓彦祯", "count": 1.0, "amount": 312.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "龙礼林", "count": 1.0, "amount": 114.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳文教卫行业组", "requester": "杨大伏", "count": 1.0, "amount": 45.0}, {"month": "2026.03", "dept1": "深桂大区", "dept2": "深圳综合管理办公室", "dept3": "深圳重点项目组", "requester": "崔营", "count": 1.0, "amount": 124.0}, {"month": "2026.03", "dept1": "市场营销中心", "dept2": "未细分", "dept3": "未细分", "requester": "黄可", "count": 1.0, "amount": 380.0}, {"month": "2026.03", "dept1": "市场营销中心", "dept2": "未细分", "dept3": "未细分", "requester": "苏钰娟", "count": 4.0, "amount": 1017.0}, {"month": "2026.03", "dept1": "市场营销中心", "dept2": "未细分", "dept3": "未细分", "requester": "王昀昀", "count": 1.0, "amount": 750.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "解决方案部", "dept3": "未细分", "requester": "王捷", "count": 1.0, "amount": 558.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "合肥二组", "requester": "汪俊", "count": 1.0, "amount": 905.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "傅仕阳", "count": 1.0, "amount": 110.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京二组", "requester": "刘倩霞", "count": 1.0, "amount": 158.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "杜文文", "count": 1.0, "amount": 330.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "南京一组", "requester": "吴飞", "count": 1.0, "amount": 59.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "李婧", "count": 2.0, "amount": 56.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州二组", "requester": "许洪洋", "count": 1.0, "amount": 220.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "宋怡雯", "count": 1.0, "amount": 167.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "孙传宴", "count": 1.0, "amount": 166.0}, {"month": "2026.03", "dept1": "苏皖大区", "dept2": "苏皖综合管理办公室", "dept3": "苏州一组", "requester": "姚瑶", "count": 1.0, "amount": 170.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "未细分", "dept3": "未细分", "requester": "李玉莹", "count": 1.0, "amount": 240.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "未细分", "dept3": "未细分", "requester": "邵晨", "count": 1.0, "amount": 2302.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城方案组", "dept3": "未细分", "requester": "刘捷华", "count": 1.0, "amount": 656.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营二组", "requester": "李博妍", "count": 1.0, "amount": 1048.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营二组", "requester": "李一菲", "count": 6.0, "amount": 6818.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营三组", "requester": "吴颖杰", "count": 2.0, "amount": 711.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营三组", "requester": "武雪燕", "count": 4.0, "amount": 2480.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营三组", "requester": "张航", "count": 1.0, "amount": 238.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "包彤", "count": 4.0, "amount": 9714.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "陈宇佳", "count": 4.0, "amount": 3828.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "李悦", "count": 1.0, "amount": 580.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "李璐", "count": 4.0, "amount": 3294.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "王平", "count": 8.0, "amount": 7809.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "商城运营部", "dept3": "商城运营一组", "requester": "叶瑞铨", "count": 3.0, "amount": 3171.0}, {"month": "2026.03", "dept1": "销售中台", "dept2": "用户体验设计部", "dept3": "未细分", "requester": "金鑫", "count": 9.0, "amount": 16300.0}, {"month": "2026.03", "dept1": "战略合作中心", "dept2": "供应链MRO部", "dept3": "未细分", "requester": "刘佳", "count": 1.0, "amount": 69.0}, {"month": "2026.03", "dept1": "战略合作中心", "dept2": "公共事务部", "dept3": "未细分", "requester": "韩玲", "count": 1.0, "amount": 3704.0}, {"month": "2026.03", "dept1": "战略合作中心", "dept2": "战略能源部", "dept3": "未细分", "requester": "王恩曦", "count": 2.0, "amount": 688.0}, {"month": "2026.03", "dept1": "战略合作中心", "dept2": "战略能源部", "dept3": "未细分", "requester": "臧富见", "count": 2.0, "amount": 818.0}, {"month": "2026.03", "dept1": "战略合作中心", "dept2": "战略通讯部", "dept3": "未细分", "requester": "闫霖琳", "count": 1.0, "amount": 133.0}, {"month": "2026.03", "dept1": "战略合作中心", "dept2": "战略制造部", "dept3": "未细分", "requester": "孟佳兴", "count": 7.0, "amount": 961.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "解决方案部(1)", "dept3": "商城运营组", "requester": "肖志远", "count": 1.0, "amount": 304.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "福州站", "requester": "杜小娟", "count": 1.0, "amount": 356.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "陈丽琴", "count": 3.0, "amount": 1623.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波文教卫行业组", "requester": "李杰", "count": 1.0, "amount": 250.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "宁波政府机关行业组", "requester": "陈越", "count": 4.0, "amount": 1663.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "温州站", "requester": "陈宗", "count": 1.0, "amount": 65.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "温州站", "requester": "肖昌钾", "count": 2.0, "amount": 275.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙二营销区", "dept3": "温州站", "requester": "张玉霞", "count": 1.0, "amount": 110.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州金融行业一组", "requester": "曹志锋", "count": 1.0, "amount": 400.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州金融行业一组", "requester": "姚远", "count": 1.0, "amount": 172.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州能源交通行业组", "requester": "张娟", "count": 2.0, "amount": 632.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州政府机关行业组", "requester": "潘锦佳", "count": 1.0, "amount": 206.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "杭州政府机关行业组", "requester": "张桂聪", "count": 1.0, "amount": 156.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "戚璐", "count": 1.0, "amount": 100.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "严玉", "count": 1.0, "amount": 41.0}, {"month": "2026.03", "dept1": "浙闽大区", "dept2": "浙一营销区", "dept3": "湖州站", "requester": "姚建杰", "count": 1.0, "amount": 117.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉基建制造行业组", "requester": "胡松", "count": 2.0, "amount": 320.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "陈绪涛", "count": 1.0, "amount": 112.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "魏欣蓓", "count": 1.0, "amount": 228.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "湖北营销区", "dept3": "武汉能源交通行业组", "requester": "周靓", "count": 1.0, "amount": 43.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "长沙站", "requester": "王涛", "count": 1.0, "amount": 37.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "成都站", "requester": "樊文", "count": 1.0, "amount": 476.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "成都站", "requester": "何光耀", "count": 1.0, "amount": 17.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "成都站", "requester": "谢晓宇", "count": 1.0, "amount": 47.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "成都站", "requester": "卓毓涛", "count": 1.0, "amount": 176.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "重庆站", "requester": "廖佳晖", "count": 1.0, "amount": 0.0}, {"month": "2026.03", "dept1": "中西大区", "dept2": "中西综合管理办公室", "dept3": "重庆站", "requester": "杨彦祥", "count": 2.0, "amount": 893.0}]};
+    const RAW_RECORDS = DATA.records || [];
+    const ALL_VALUE = '__ALL__';
+    const state = {
+      month: ALL_VALUE,
+      dept1: ALL_VALUE,
+      dept2: ALL_VALUE
+    };
+
+    const nf = new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 0 });
+    const money = (v) => `¥${nf.format(Math.round(v))}`;
+    const num = (v) => nf.format(Math.round(v));
+    const pct = (v) => `${(v * 100).toFixed(1)}%`;
+    const palette = ['#0f4c81', '#1a6a8c', '#2d87a4', '#5ca8b4', '#8ebfcc', '#b8d4dd', '#2a5b99', '#bf6d2b', '#7ca34f', '#7e93ad'];
+    const BAND_ORDER = ['100元以下', '100-299元', '300-599元', '600-999元', '1000元及以上'];
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    function emptyChart(targetId, message = '当前筛选无可展示数据') {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      target.innerHTML = `<div class="no-data">${escapeHtml(message)}</div>`;
+    }
+
+    function shortLabel(text, max = 14) {
+      if (!text) return '';
+      return text.length > max ? `${text.slice(0, max)}…` : text;
+    }
+
+    function mapToMetrics(mapObj, totalAmount) {
+      return [...mapObj.entries()].map(([name, pair]) => {
+        const cnt = pair[0];
+        const amt = pair[1];
+        return {
+          name,
+          cnt,
+          amt,
+          unit: cnt ? amt / cnt : 0,
+          share: totalAmount ? amt / totalAmount : 0
+        };
+      });
+    }
+
+    function aggregateRecords(records) {
+      const monthly = new Map();
+      const dept1 = new Map();
+      const dept2 = new Map();
+      const dept3 = new Map();
+      const requester = new Map();
+      const matrix = {};
+      const bandAmt = new Map(BAND_ORDER.map((b) => [b, 0]));
+      const bandRows = new Map(BAND_ORDER.map((b) => [b, 0]));
+
+      let totalProjects = 0;
+      let totalAmount = 0;
+
+      for (const r of records) {
+        const cnt = Number(r.count || 0);
+        const amt = Number(r.amount || 0);
+        totalProjects += cnt;
+        totalAmount += amt;
+
+        if (!monthly.has(r.month)) monthly.set(r.month, { cnt: 0, amt: 0 });
+        monthly.get(r.month).cnt += cnt;
+        monthly.get(r.month).amt += amt;
+
+        if (!dept1.has(r.dept1)) dept1.set(r.dept1, [0, 0]);
+        dept1.get(r.dept1)[0] += cnt;
+        dept1.get(r.dept1)[1] += amt;
+
+        const d2 = `${r.dept1} / ${r.dept2}`;
+        if (!dept2.has(d2)) dept2.set(d2, [0, 0]);
+        dept2.get(d2)[0] += cnt;
+        dept2.get(d2)[1] += amt;
+
+        const d3 = `${r.dept1} / ${r.dept2} / ${r.dept3}`;
+        if (!dept3.has(d3)) dept3.set(d3, [0, 0]);
+        dept3.get(d3)[0] += cnt;
+        dept3.get(d3)[1] += amt;
+
+        if (!requester.has(r.requester)) requester.set(r.requester, [0, 0]);
+        requester.get(r.requester)[0] += cnt;
+        requester.get(r.requester)[1] += amt;
+
+        if (!matrix[r.month]) matrix[r.month] = {};
+        matrix[r.month][r.dept1] = (matrix[r.month][r.dept1] || 0) + amt;
+
+        let band = '1000元及以上';
+        if (amt < 100) band = '100元以下';
+        else if (amt < 300) band = '100-299元';
+        else if (amt < 600) band = '300-599元';
+        else if (amt < 1000) band = '600-999元';
+        bandAmt.set(band, (bandAmt.get(band) || 0) + amt);
+        bandRows.set(band, (bandRows.get(band) || 0) + 1);
+      }
+
+      const months = [...monthly.entries()]
+        .sort((a, b) => a[0].localeCompare(b[0], 'zh-Hans-CN'))
+        .map(([month, v]) => ({
+          month,
+          cnt: v.cnt,
+          amt: v.amt,
+          unit: v.cnt ? v.amt / v.cnt : 0
+        }));
+
+      const dept1Metrics = mapToMetrics(dept1, totalAmount);
+      const dept2Metrics = mapToMetrics(dept2, totalAmount);
+      const requesterMetrics = mapToMetrics(requester, totalAmount);
+
+      const requesterAmt = requesterMetrics.map((x) => x.amt).sort((a, b) => b - a);
+      const cr = (n) => totalAmount ? requesterAmt.slice(0, n).reduce((s, v) => s + v, 0) / totalAmount : 0;
+      const hhi = totalAmount
+        ? requesterAmt.reduce((s, v) => s + (v / totalAmount) * (v / totalAmount), 0) * 10000
+        : 0;
+
+      const costBands = BAND_ORDER.map((band) => {
+        const amt = bandAmt.get(band) || 0;
+        const rows = bandRows.get(band) || 0;
+        return {
+          band,
+          amt,
+          share: totalAmount ? amt / totalAmount : 0,
+          rows,
+          row_share: records.length ? rows / records.length : 0
+        };
+      });
+
+      const dept2Top = dept2Metrics.sort((a, b) => b.amt - a.amt);
+      const requesterTopAmt = requesterMetrics.sort((a, b) => b.amt - a.amt);
+
+      return {
+        total: {
+          projects: totalProjects,
+          amount: totalAmount,
+          unit: totalProjects ? totalAmount / totalProjects : 0,
+          rows: records.length,
+          requester_count: requester.size,
+          dept1_count: dept1.size,
+          dept2_count: dept2.size,
+          dept3_count: dept3.size
+        },
+        months,
+        dept1_top_amt: dept1Metrics.sort((a, b) => b.amt - a.amt),
+        dept1_top_unit: dept1Metrics.filter((x) => x.cnt >= 30).sort((a, b) => b.unit - a.unit),
+        dept2_top_amt: dept2Top,
+        requester_top_amt: requesterTopAmt,
+        cost_bands: costBands,
+        concentration: {
+          CR1: cr(1),
+          CR5: cr(5),
+          CR10: cr(10),
+          CR20: cr(20),
+          tail80_share: 1 - cr(20),
+          HHI: hhi
+        },
+        matrix_month_dept1: matrix
+      };
+    }
+
+    function getUniqueValues(records, key) {
+      return [...new Set(records.map((r) => r[key]))].sort((a, b) => String(a).localeCompare(String(b), 'zh-Hans-CN'));
+    }
+
+    function setSelectOptions(selectEl, options, keepValue = ALL_VALUE) {
+      const current = keepValue;
+      selectEl.innerHTML = '';
+      for (const op of options) {
+        const option = document.createElement('option');
+        option.value = op.value;
+        option.textContent = op.label;
+        selectEl.appendChild(option);
+      }
+      const found = options.some((op) => op.value === current);
+      selectEl.value = found ? current : options[0].value;
+    }
+
+    function filterRecords(records, filters) {
+      return records.filter((r) => {
+        const monthOk = filters.month === ALL_VALUE || r.month === filters.month;
+        const dept1Ok = filters.dept1 === ALL_VALUE || r.dept1 === filters.dept1;
+        const dept2Ok = filters.dept2 === ALL_VALUE || r.dept2 === filters.dept2;
+        return monthOk && dept1Ok && dept2Ok;
+      });
+    }
+
+    function refreshDept2Options() {
+      const source = RAW_RECORDS.filter((r) => {
+        const monthOk = state.month === ALL_VALUE || r.month === state.month;
+        const dept1Ok = state.dept1 === ALL_VALUE || r.dept1 === state.dept1;
+        return monthOk && dept1Ok;
+      });
+      const dept2Values = getUniqueValues(source, 'dept2');
+      const options = [{ value: ALL_VALUE, label: '全部部门' }, ...dept2Values.map((v) => ({ value: v, label: v }))];
+      const select = document.getElementById('filter-dept2');
+      setSelectOptions(select, options, state.dept2);
+      state.dept2 = select.value;
+    }
+
+    function barChart(targetId, rawItems, valueKey, options = {}) {
+      const target = document.getElementById(targetId);
+      const items = rawItems.slice(0, options.topN || 10);
+      if (!target || items.length === 0) {
+        emptyChart(targetId);
+        return;
+      }
+      const width = 860;
+      const rowH = 32;
+      const margin = { top: 20, right: 100, bottom: 12, left: 250 };
+      const height = margin.top + margin.bottom + rowH * items.length;
+      const plotW = width - margin.left - margin.right;
+      const maxBase = Math.max(...items.map((i) => Number(i[valueKey] || 0)));
+      const maxVal = maxBase > 0 ? maxBase * 1.08 : 1;
+
+      const gridLines = [0.25, 0.5, 0.75, 1].map((r) => {
+        const x = margin.left + plotW * r;
+        return `<line x1="${x}" y1="${margin.top - 4}" x2="${x}" y2="${height - margin.bottom}" stroke="#e6edf4" stroke-width="1" />`;
+      }).join('');
+
+      const bars = items.map((d, i) => {
+        const y = margin.top + i * rowH + 4;
+        const barW = (d[valueKey] / maxVal) * plotW;
+        const color = options.color || '#0f4c81';
+        const label = shortLabel(d.name, options.labelMax || 18);
+        const suffix = options.unit === 'currency' ? money(d[valueKey]) : num(d[valueKey]);
+        return `
+          <text x="${margin.left - 8}" y="${y + 13}" text-anchor="end" fill="#304b67" font-size="12">${label}</text>
+          <rect x="${margin.left}" y="${y}" rx="4" ry="4" width="${barW}" height="18" fill="${color}" opacity="0.9" />
+          <text x="${margin.left + barW + 8}" y="${y + 13}" fill="#1f3d5a" font-size="12">${suffix}</text>
+        `;
+      }).join('');
+
+      target.innerHTML = `
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="bar chart">
+          ${gridLines}
+          ${bars}
+        </svg>
+      `;
+    }
+
+    function monthlyCombo(targetId, months) {
+      const target = document.getElementById(targetId);
+      if (!target || months.length === 0) {
+        emptyChart(targetId);
+        return;
+      }
+      const width = 880;
+      const height = 340;
+      const margin = { top: 28, right: 78, bottom: 58, left: 72 };
+      const plotW = width - margin.left - margin.right;
+      const plotH = height - margin.top - margin.bottom;
+
+      const maxAmtBase = Math.max(...months.map((m) => Number(m.amt || 0)));
+      const maxCntBase = Math.max(...months.map((m) => Number(m.cnt || 0)));
+      const maxAmt = maxAmtBase > 0 ? maxAmtBase * 1.18 : 1;
+      const maxCnt = maxCntBase > 0 ? maxCntBase * 1.2 : 1;
+      const stepX = plotW / months.length;
+      const barW = Math.min(84, stepX * 0.48);
+
+      const yAmt = (v) => margin.top + plotH - (v / maxAmt) * plotH;
+      const yCnt = (v) => margin.top + plotH - (v / maxCnt) * plotH;
+
+      const bgLines = [0, 0.25, 0.5, 0.75, 1].map((r) => {
+        const y = margin.top + plotH * r;
+        return `<line x1="${margin.left}" y1="${y}" x2="${width - margin.right}" y2="${y}" stroke="#e8eef5" />`;
+      }).join('');
+
+      const bars = months.map((m, i) => {
+        const xCenter = margin.left + stepX * i + stepX * 0.5;
+        const x = xCenter - barW / 2;
+        const y = yAmt(m.amt);
+        const h = margin.top + plotH - y;
+        return `
+          <rect x="${x}" y="${y}" width="${barW}" height="${h}" rx="6" fill="url(#barGrad)" />
+          <text x="${xCenter}" y="${height - 23}" text-anchor="middle" font-size="12" fill="#355271">${m.month}</text>
+          <text x="${xCenter}" y="${y - 8}" text-anchor="middle" font-size="11" fill="#1f3d5a">${money(m.amt)}</text>
+          <text x="${xCenter}" y="${height - 8}" text-anchor="middle" font-size="11" fill="#6a7f97">单价 ${money(m.unit)}</text>
+        `;
+      }).join('');
+
+      const points = months.map((m, i) => {
+        const x = margin.left + stepX * i + stepX * 0.5;
+        const y = yCnt(m.cnt);
+        return { x, y, m };
+      });
+
+      const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+      const circles = points.map((p) => `
+        <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#bf6d2b" stroke="#fff" stroke-width="1.5" />
+        <text x="${p.x}" y="${p.y - 10}" text-anchor="middle" font-size="11" fill="#8a4f20">${num(p.m.cnt)}</text>
+      `).join('');
+
+      target.innerHTML = `
+      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="monthly combo chart">
+        <defs>
+          <linearGradient id="barGrad" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#2e78aa" />
+            <stop offset="100%" stop-color="#0f4c81" />
+          </linearGradient>
+        </defs>
+        ${bgLines}
+        <line x1="${margin.left}" y1="${margin.top + plotH}" x2="${width - margin.right}" y2="${margin.top + plotH}" stroke="#c8d6e5" />
+        ${bars}
+        <path d="${path}" fill="none" stroke="#bf6d2b" stroke-width="2.5" />
+        ${circles}
+        <text x="${margin.left}" y="${margin.top - 8}" fill="#5b738e" font-size="11">金额</text>
+        <text x="${width - margin.right - 28}" y="${margin.top - 8}" fill="#8a4f20" font-size="11">项目数</text>
+      </svg>
+      `;
+    }
+
+    function donutChart(targetId, legendId, items) {
+      const target = document.getElementById(targetId);
+      const legend = document.getElementById(legendId);
+      if (!target || !legend || items.length === 0) {
+        emptyChart(targetId);
+        if (legend) legend.innerHTML = '';
+        return;
+      }
+      const total = items.reduce((sum, i) => sum + i.amt, 0);
+      if (!total) {
+        emptyChart(targetId);
+        legend.innerHTML = '';
+        return;
+      }
+
+      let cursor = 0;
+      const segments = items.map((item, i) => {
+        const start = cursor;
+        const ratio = item.amt / total;
+        cursor += ratio;
+        const end = cursor;
+        const startPct = (start * 100).toFixed(2);
+        const endPct = (end * 100).toFixed(2);
+        return `${palette[i % palette.length]} ${startPct}% ${endPct}%`;
+      });
+
+      target.style.background = `conic-gradient(${segments.join(', ')})`;
+
+      legend.innerHTML = items.map((item, i) => `
+        <li>
+          <span class="swatch" style="background:${palette[i % palette.length]}"></span>
+          <span>${item.band} ｜ ${pct(item.share)} ｜ ${money(item.amt)} ｜ 明细${pct(item.row_share)}</span>
+        </li>
+      `).join('');
+    }
+
+    function heatmap(targetId, matrix, deptRank, monthRank) {
+      if (deptRank.length === 0 || monthRank.length === 0) {
+        emptyChart(targetId);
+        return;
+      }
+      const maxVal = Math.max(...monthRank.flatMap((m) => deptRank.map((d) => (matrix[m] && matrix[m][d]) || 0)));
+      const cellColor = (v) => {
+        const ratio = maxVal ? v / maxVal : 0;
+        const r = Math.round(236 - ratio * 155);
+        const g = Math.round(244 - ratio * 132);
+        const b = Math.round(251 - ratio * 99);
+        return `rgb(${r}, ${g}, ${b})`;
+      };
+
+      const header = `<tr><th>月份</th>${deptRank.map(d => `<th>${shortLabel(d, 10)}</th>`).join('')}</tr>`;
+      const rows = monthRank.map((m) => {
+        const tds = deptRank.map((d) => {
+          const val = (matrix[m] && matrix[m][d]) || 0;
+          return `<td style="background:${cellColor(val)}" class="mono">${money(val)}</td>`;
+        }).join('');
+        return `<tr><td>${m}</td>${tds}</tr>`;
+      }).join('');
+
+      document.getElementById(targetId).innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>${header}</thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function scatter(targetId, items) {
+      const target = document.getElementById(targetId);
+      const data = items.slice(0, 30);
+      if (!target || data.length === 0) {
+        emptyChart(targetId);
+        return;
+      }
+      const width = 860;
+      const height = 320;
+      const margin = { top: 22, right: 30, bottom: 52, left: 65 };
+      const plotW = width - margin.left - margin.right;
+      const plotH = height - margin.top - margin.bottom;
+
+      const maxXBase = Math.max(...data.map((d) => Number(d.cnt || 0)));
+      const maxYBase = Math.max(...data.map((d) => Number(d.unit || 0)));
+      const maxABase = Math.max(...data.map((d) => Number(d.amt || 0)));
+      const maxX = maxXBase > 0 ? maxXBase * 1.15 : 1;
+      const maxY = maxYBase > 0 ? maxYBase * 1.12 : 1;
+      const maxA = maxABase > 0 ? maxABase : 1;
+
+      const x = (v) => margin.left + (v / maxX) * plotW;
+      const y = (v) => margin.top + plotH - (v / maxY) * plotH;
+      const r = (a) => 4 + Math.sqrt(a / maxA) * 11;
+
+      const grid = [0.25, 0.5, 0.75, 1].map((s) => {
+        const yv = margin.top + plotH * s;
+        return `<line x1="${margin.left}" y1="${yv}" x2="${width - margin.right}" y2="${yv}" stroke="#e8eef5"/>`;
+      }).join('');
+
+      const pts = data.map((d, i) => {
+        const cx = x(d.cnt);
+        const cy = y(d.unit);
+        const color = palette[i % palette.length];
+        const label = i < 6 ? `<text x="${cx + 8}" y="${cy - 6}" font-size="11" fill="#2b4562">${shortLabel(d.name, 6)}</text>` : '';
+        return `
+          <circle cx="${cx}" cy="${cy}" r="${r(d.amt)}" fill="${color}" fill-opacity="0.35" stroke="${color}" stroke-width="1.2"/>
+          ${label}
+        `;
+      }).join('');
+
+      target.innerHTML = `
+      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="scatter chart">
+        ${grid}
+        <line x1="${margin.left}" y1="${margin.top + plotH}" x2="${width - margin.right}" y2="${margin.top + plotH}" stroke="#c8d6e5" />
+        <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${margin.top + plotH}" stroke="#c8d6e5" />
+        ${pts}
+        <text x="${width / 2}" y="${height - 14}" text-anchor="middle" fill="#58708a" font-size="11">项目数（件）</text>
+        <text x="18" y="${height / 2}" transform="rotate(-90 18 ${height / 2})" text-anchor="middle" fill="#58708a" font-size="11">单项目金额（元）</text>
+      </svg>
+      `;
+    }
+
+    function renderKpis(agg) {
+      setText('kpi-projects', num(agg.total.projects));
+      setText('kpi-amount', money(agg.total.amount));
+      setText('kpi-unit', money(agg.total.unit));
+      setText('kpi-requester-count', num(agg.total.requester_count));
+      setText('kpi-org', `${num(agg.total.dept1_count)}/${num(agg.total.dept2_count)}/${num(agg.total.dept3_count)}`);
+      setText('kpi-rows', num(agg.total.rows));
+    }
+
+    function renderConcentration(agg) {
+      setText('metric-cr1', pct(agg.concentration.CR1 || 0));
+      setText('metric-cr5', pct(agg.concentration.CR5 || 0));
+      setText('metric-cr10', pct(agg.concentration.CR10 || 0));
+      setText('metric-cr20', pct(agg.concentration.CR20 || 0));
+      setText('metric-tail', pct(agg.concentration.tail80_share || 0));
+      setText('metric-hhi', (agg.concentration.HHI || 0).toFixed(0));
+    }
+
+    function renderTables(agg) {
+      const dept2Body = document.getElementById('dept2-table-body');
+      const requesterBody = document.getElementById('requester-table-body');
+
+      if (dept2Body) {
+        if (!agg.dept2_top_amt.length) {
+          dept2Body.innerHTML = '<tr><td colspan="6" class="note">当前筛选无数据</td></tr>';
+        } else {
+          dept2Body.innerHTML = agg.dept2_top_amt.slice(0, 10).map((row, idx) => `
+            <tr>
+              <td>${idx + 1}</td>
+              <td>${escapeHtml(row.name)}</td>
+              <td>${num(row.cnt)}</td>
+              <td>${money(row.amt)}</td>
+              <td>${money(row.unit)}</td>
+              <td>${pct(row.share)}</td>
+            </tr>
+          `).join('');
+        }
+      }
+
+      if (requesterBody) {
+        if (!agg.requester_top_amt.length) {
+          requesterBody.innerHTML = '<tr><td colspan="5" class="note">当前筛选无数据</td></tr>';
+        } else {
+          requesterBody.innerHTML = agg.requester_top_amt.slice(0, 12).map((row, idx) => `
+            <tr>
+              <td>${idx + 1}</td>
+              <td>${escapeHtml(row.name)}</td>
+              <td>${num(row.cnt)}</td>
+              <td>${money(row.amt)}</td>
+              <td>${money(row.unit)}</td>
+            </tr>
+          `).join('');
+        }
+      }
+    }
+
+    function updateFilterSummary(hitRows) {
+      const monthLabel = state.month === ALL_VALUE ? '全部月份' : state.month;
+      const dept1Label = state.dept1 === ALL_VALUE ? '全部大区/一级部门' : state.dept1;
+      const dept2Label = state.dept2 === ALL_VALUE ? '全部部门' : state.dept2;
+      setText('filter-summary', `当前筛选：${monthLabel} ｜ ${dept1Label} ｜ ${dept2Label} ｜ 命中明细 ${num(hitRows)} 条`);
+    }
+
+    function renderAll() {
+      const filtered = filterRecords(RAW_RECORDS, state);
+      const agg = aggregateRecords(filtered);
+
+      renderKpis(agg);
+      renderConcentration(agg);
+      renderTables(agg);
+      updateFilterSummary(filtered.length);
+
+      monthlyCombo('chart-monthly', agg.months);
+      barChart('chart-dept1-amt', agg.dept1_top_amt, 'amt', { topN: 10, unit: 'currency', color: '#0f4c81', labelMax: 14 });
+      barChart('chart-dept1-unit', agg.dept1_top_unit, 'unit', { topN: 9, unit: 'currency', color: '#1a6a8c', labelMax: 14 });
+      barChart('chart-requester', agg.requester_top_amt, 'amt', { topN: 12, unit: 'currency', color: '#2d87a4', labelMax: 8 });
+      donutChart('chart-donut', 'chart-donut-legend', agg.cost_bands);
+      scatter('chart-scatter', agg.requester_top_amt);
+
+      const monthRank = agg.months.map((m) => m.month);
+      const deptRank = agg.dept1_top_amt.slice(0, 8).map((d) => d.name);
+      heatmap('chart-heatmap', agg.matrix_month_dept1, deptRank, monthRank);
+    }
+
+    function initFilters() {
+      const monthSelect = document.getElementById('filter-month');
+      const dept1Select = document.getElementById('filter-dept1');
+      const dept2Select = document.getElementById('filter-dept2');
+      const resetBtn = document.getElementById('btn-reset-filters');
+
+      const monthOptions = getUniqueValues(RAW_RECORDS, 'month');
+      const dept1Options = getUniqueValues(RAW_RECORDS, 'dept1');
+
+      setSelectOptions(
+        monthSelect,
+        [{ value: ALL_VALUE, label: '全部月份' }, ...monthOptions.map((v) => ({ value: v, label: v }))]
+      );
+      setSelectOptions(
+        dept1Select,
+        [{ value: ALL_VALUE, label: '全部大区/一级部门' }, ...dept1Options.map((v) => ({ value: v, label: v }))]
+      );
+
+      refreshDept2Options();
+
+      monthSelect.addEventListener('change', () => {
+        state.month = monthSelect.value;
+        refreshDept2Options();
+        renderAll();
+      });
+
+      dept1Select.addEventListener('change', () => {
+        state.dept1 = dept1Select.value;
+        refreshDept2Options();
+        renderAll();
+      });
+
+      dept2Select.addEventListener('change', () => {
+        state.dept2 = dept2Select.value;
+        renderAll();
+      });
+
+      resetBtn.addEventListener('click', () => {
+        state.month = ALL_VALUE;
+        state.dept1 = ALL_VALUE;
+        state.dept2 = ALL_VALUE;
+        monthSelect.value = ALL_VALUE;
+        dept1Select.value = ALL_VALUE;
+        refreshDept2Options();
+        renderAll();
+      });
+    }
+
+    function init() {
+      initFilters();
+      renderAll();
+    }
+
+    init();
+  </script>
+</body>
+</html>
